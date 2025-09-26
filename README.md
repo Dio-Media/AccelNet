@@ -1,5 +1,5 @@
 # AccelNet
-Full-Stack Website Development Proposal: AccelNet
+-Stack Website Development Proposal: AccelNet
 Prepared For: AccelNet Collaborative Members Date: September 22, 2025
 1. Executive Summary
 This proposal outlines the plan to design, develop, and deploy a full-stack web application named AccelNet. The platform's purpose is to serve as a dynamic, centralized hub for the six collaborating members: Brain Center, Carata, UCSF, UCL, NeuroLife, EBrains, and the Swiss Center for Effective Science. The project aims to solve the challenge of disparate information and a lack of real-time collaboration by creating a dynamic website that seamlessly manages and presents data, provides a clear communication channel, and showcases the collective work and expertise of its members.
@@ -37,3 +37,37 @@ Database:
 Type: MySQL 
 5. Project Timeline
 This is an estimated timeline for the project, broken down into key phases.
+Phase
+Duration (approx.)
+Description
+1. Discovery & Planning
+2 weeks
+In-depth requirements gathering, user stories, and technical architecture planning.
+2. Design & Prototyping
+3 weeks
+Creating wireframes, mockups, and a design system for the user interface.
+3. Core Dev & Authentication
+6 weeks
+Building the base framework, authentication system, and core API logic.
+4. Dynamic Content & Database
+8 weeks
+Developing the dynamic display features and the database logic for all content types.
+5. Features & Integrations
+4 weeks
+Implementing the calendar, comments, filtering, recommendations, and ORCID integration.
+6. Testing & QA
+2 weeks
+Comprehensive testing and bug fixes to ensure a smooth launch.
+7. Deployment & Launch
+1 week
+Final deployment to the hosting environment and public launch.
+Total Estimated Time
+26 weeks
+
+
+
+6. Conclusion
+This proposal outlines a clear and structured approach to building a robust full-stack website that meets the specific needs and objectives of the AccelNet consortium. We are confident that with this plan and the proposed technology stack, we can deliver a high-quality product that provides significant value and enhances collaboration among all members.
+Next Steps:
+Review this proposal and feel free to ask any questions.
+We can schedule a follow-up meeting to discuss the details further, such as specifics on the resources and products you'd like to feature.
