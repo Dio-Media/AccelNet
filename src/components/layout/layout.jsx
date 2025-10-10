@@ -1,13 +1,14 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Header from './Header';
-import Footer from './footer';
+import Footer from './Footer';
 
-export default function Layout({ children }) {
+export default function Layout() {
   return (
     <div className="App">
       <Header />
-      {/* Renders the specific page component (Home, About, etc.) */}
-      {children} 
+      {/* Outlet renders the matched child route */}
+      <Outlet />
       <Footer />
     </div>
   );

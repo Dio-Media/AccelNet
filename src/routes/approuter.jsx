@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Layout from '../components/layout/layout';
+import Layout from '../components/layout/Layout';
 
 // Import Pages
-import Home from '../pages/Home/home.jsx';
+import Home from '../pages/Home/Home';
 
 // Placeholder Component for pages you haven't built yet
 const Placeholder = ({ title }) => (
