@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
+import Login from "./pages/JoinUs/Login";
 import Layout from "./components/layout/Layout";
 import "./App.css";
 
@@ -37,7 +38,7 @@ function App() {
       </Route>
       
       {/* Login page without layout (if you want it separate) */}
-      <Route path="/login" element={<Placeholder title="Login / Register" />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 }
