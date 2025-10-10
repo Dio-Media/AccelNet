@@ -30,12 +30,12 @@ export default function Home() {
         <h2 className="section-title">How Can We Help You?</h2>
         <div className="info-cards">
           <div className="info-card">
-            <div className="card-icon">📚</div>
+            <div className="card-icon">🗓️</div>
             <h3>Find Events</h3>
             <p>Discover upcoming conferences, workshops, and training schools in your field.</p>
           </div>
           <div className="info-card">
-            <div className="card-icon">🤝</div>
+            <div className="card-icon">🌐</div>
             <h3>Network</h3>
             <p>Connect with researchers and organizations across multiple disciplines.</p>
           </div>
@@ -56,7 +56,7 @@ export default function Home() {
           <h2 className="section-title">News & Success Stories</h2>
           <div className="news-grid">
             <div className="news-card">
-              <div className="news-image">📊</div>
+              <div className="news-image">🔬</div>
               <div className="news-content">
                 <div className="news-date">October 5, 2025</div>
                 <h3>Building bridges in science</h3>
@@ -65,7 +65,7 @@ export default function Home() {
               </div>
             </div>
             <div className="news-card">
-              <div className="news-image">🔬</div>
+              <div className="news-image">🤖</div>
               <div className="news-content">
                 <div className="news-date">October 2, 2025</div>
                 <h3>Investigating AI applications</h3>
@@ -74,7 +74,7 @@ export default function Home() {
               </div>
             </div>
             <div className="news-card">
-              <div className="news-image">🌍</div>
+              <div className="news-image">⚖️</div>
               <div className="news-content">
                 <div className="news-date">September 28, 2025</div>
                 <h3>Supporting minority rights</h3>
