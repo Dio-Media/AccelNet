@@ -13,6 +13,8 @@ const Placeholder = ({ title }) => (
 );
 
 function App() {
+  console.log('API →', process.env.REACT_APP_API_URL);
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
