@@ -1,8 +1,5 @@
 const fs = require("fs");
 const mysql = require("mysql");
-const serverCa = [
-	fs.readFileSync(__dirname + "/DigiCertGlobalRootCA.crt.pem", "utf8"),
-];
 const mysql2 = require("mysql2");
 
 const conn = mysql2.createConnection({
@@ -18,8 +15,8 @@ const conn = mysql2.createConnection({
 });
 
 const dbConnection = mysql.createConnection({
-	host: "zoo-team7.mysql.database.azure.com",
-	user: "dbadmin",
+	host: "",
+	user: "",
 	password: process.env.DB_PASSWORD,
 	database: process.env.DB_DATABASE,
 	port: 3306,
