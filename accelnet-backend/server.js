@@ -15,7 +15,7 @@ const publicationsRoutes = require('./routes/publicationsRoutes');
 const grantsRoutes = require('./routes/grantsRoutes');
 
 // Load environment variables
-dotenv.config();
+require('dotenv').config();
 
 // Initialize express app
 const app = express();

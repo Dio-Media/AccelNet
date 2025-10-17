@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken');
 const { users } = require('../models');
 const { loginSchema, registerSchema } = require('../validation/authValidation');
+const bcrypt = require('bcrypt');
 
 // JWT secret should be in environment variable in production
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Login controller
 exports.login = (req, res) => {
@@ -19,8 +20,8 @@ exports.login = (req, res) => {
   const user = users.find(u => u.email === email);
   
   // Check if user exists and password matches
-  if (!user || password !== user.password) { // In real app, use bcrypt.compare
-    return res.status(401).json({ message: 'Invalid credentials' });
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
   
   // Generate JWT token - improved token generation
@@ -61,10 +62,12 @@ exports.register = (req, res) => {
   }
   
   // Create new user
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
   const newUser = {
     id: (users.length + 1).toString(),
     email,
-    password, // In real app, hash the password
+    password: hashedPassword,
     firstName: '',
     lastName: '',
     role,
