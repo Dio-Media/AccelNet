@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 
 // Import Pages
-import Home from '../pages/Home/Home';
+import Home from '../pages/Home';
 
 // Placeholder Component for pages you haven't built yet
 const Placeholder = ({ title }) => (
