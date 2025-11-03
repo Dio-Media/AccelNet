@@ -2,9 +2,9 @@
   "name": "accelnet-1",
   "version": "1.0.0",
   "description": "AccelNet - the start of a new website",
-  "main": "backend/server.js",
+  "main": "accelnet-backend/server.js",
   "scripts": {
-    "dev": "node --watch backend/server.js"
+    "dev": "node --watch accelnet-backend/server.js"
   },
   "keywords": [],
   "author": "",

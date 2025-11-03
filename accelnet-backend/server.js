@@ -7,7 +7,7 @@ import { ENV_VARS } from './config/envVars.js';
 
 // Import routes
 import authRoutes from './routes/auth.route.js';
-import { protectRoute } from './middleware/protectRoute.js';
+import protectRoutes from './routes/protect.route.js';
 import newsRoutes from './routes/news.route.js';
 import eventsRoutes from './routes/events.route.js';
 
