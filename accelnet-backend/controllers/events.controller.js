@@ -12,8 +12,8 @@ export async function getAllEvents(req, res) {
                     location, venue, event_type, status, created_at
              FROM anevents
              ORDER BY start_datetime DESC
-             LIMIT ? OFFSET ?`,
-            [limit, offset]
+             LIMIT ${limit} OFFSET ${offset}` // Use template literals
+            // Remove the [limit, offset] array argument
         );
 
         const [countResult] = await pool.execute('SELECT COUNT(*) as total FROM anevents');

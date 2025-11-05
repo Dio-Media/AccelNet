@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../lib/api';
 import { Link } from 'react-router-dom';
 
 // Simple card for styling
@@ -27,7 +27,7 @@ const EventsPage = () => {
       try {
         setLoading(true);
         // Fetch data from your backend API
-        const res = await axios.get('http://localhost:5000/api/events');
+        const res = await api.get('/events');
         setEvents(res.data.data); // Set the array of events
         setError(null);
       } catch (err) {
