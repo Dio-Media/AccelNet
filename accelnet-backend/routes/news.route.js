@@ -7,7 +7,7 @@ import {
     updateNews, 
     deleteNews 
 } from '../controllers/news.controller.js';
-import { protectRoute } from '../middleware/protectRoute.js';
+import { protectRoute } from '../middleware/protect.route.js';
 
 const router = express.Router();
 

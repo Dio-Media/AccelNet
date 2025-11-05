@@ -1,4 +1,4 @@
-// accelnet-backend/server.js - Clean Modular Version
+// accelnet-backend/server.js - FINAL CLEAN VERSION
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -7,7 +7,6 @@ import { ENV_VARS } from './config/envVars.js';
 
 // Import routes
 import authRoutes from './routes/auth.route.js';
-import protectRoutes from './routes/protect.route.js';
 import newsRoutes from './routes/news.route.js';
 import eventsRoutes from './routes/events.route.js';
 
@@ -149,15 +148,16 @@ app.use((req, res) => {
 
 // ==================== START SERVER ====================
 app.listen(ENV_VARS.PORT, () => {
-    console.log(`\n🚀 AccelNet API Server Running`);
+    console.log(`\n AccelNet API Server Running`);
     console.log(`   URL: http://localhost:${ENV_VARS.PORT}`);
     console.log(`   Environment: ${ENV_VARS.NODE_ENV}`);
     console.log(`   Database: ${ENV_VARS.DB_NAME}`);
-    console.log(`\n📋 Available endpoints:`);
+    console.log(`\n Available endpoints:`);
     console.log(`   GET  /api/health`);
     console.log(`   POST /api/auth/signup`);
     console.log(`   POST /api/auth/login`);
     console.log(`   POST /api/auth/logout`);
+    console.log(`   GET  /api/auth/verify`);
     console.log(`   GET  /api/news`);
     console.log(`   GET  /api/events`);
     console.log(`   GET  /api/events/upcoming`);
