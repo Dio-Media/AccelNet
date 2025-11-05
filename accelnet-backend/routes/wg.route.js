@@ -1,23 +1,18 @@
-// accelnet-backend/routes/news.route.js
+// accelnet-backend/routes/wg.route.js
 import express from 'express';
+// Import from the correct wg.controller.js file
 import { 
-    getAllNews, 
-    getNewsById, 
-    createNews, 
-    updateNews, 
-    deleteNews 
-} from '../controllers/news.controller.js';
+    getAllWGs
+    // getWGById, (add this when you create it)
+} from '../controllers/wg.controller.js';
 import { protectRoute } from '../middleware/protect.route.js';
 
 const router = express.Router();
 
-// Public routes
-router.get('/', getAllNews);
-router.get('/:id', getNewsById);
+// Public route to get all working groups
+router.get('/', getAllWGs);
 
-// Protected routes (require authentication)
-router.post('/', protectRoute, createNews);
-router.put('/:id', protectRoute, updateNews);
-router.delete('/:id', protectRoute, deleteNews);
+// You can add protected routes later
+// router.post('/', protectRoute, createWG);
 
 export default router;

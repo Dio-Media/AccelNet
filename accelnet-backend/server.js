@@ -9,6 +9,7 @@ import { ENV_VARS } from './config/envVars.js';
 import authRoutes from './routes/auth.route.js';
 import newsRoutes from './routes/news.route.js';
 import eventsRoutes from './routes/events.route.js';
+import workingGroupRoutes from './routes/wg.route.js';
 
 const app = express();
 
@@ -43,6 +44,9 @@ app.use('/api/news', newsRoutes);
 
 // Events routes
 app.use('/api/events', eventsRoutes);
+
+// Working Groups routes
+app.use('/api/working-groups', workingGroupRoutes);
 
 // Statistics endpoint
 app.get('/api/statistics', async (req, res) => {
