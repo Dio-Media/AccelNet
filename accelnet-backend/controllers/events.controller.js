@@ -44,12 +44,11 @@ export async function getUpcomingEvents(req, res) {
 
         const [events] = await pool.execute(
             `SELECT event_id, title, event_description, start_datetime, end_datetime,
-                    location, venue, event_type, status
-             FROM anevents
-             WHERE start_datetime > NOW() AND status = 'published'
-             ORDER BY start_datetime ASC
-             LIMIT ?`,
-            [limit]
+            location, venue, event_type, status
+            FROM anevents
+            WHERE start_datetime > NOW() AND status = 'upcoming'  /* <-- LOGIC FIX */
+            ORDER BY start_datetime ASC
+            LIMIT ${limit}`
         );
 
         res.status(200).json({

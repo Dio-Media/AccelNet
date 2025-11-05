@@ -10,10 +10,9 @@ export async function getAllNews(req, res) {
         const [news] = await pool.execute(
             `SELECT news_id, title, content, excerpt, featured_image_url, 
                     category, author_id, created_at, updated_at 
-             FROM news 
-             ORDER BY created_at DESC 
-             LIMIT ? OFFSET ?`,
-            [limit, offset]
+              FROM news 
+              ORDER BY created_at DESC 
+              LIMIT ${limit} OFFSET ${offset}`
         );
 
         // Get total count
