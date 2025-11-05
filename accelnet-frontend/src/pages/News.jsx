@@ -31,19 +31,7 @@ export default function NewsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100">
-      {/* Added Header for consistent navigation */}
-      <header className="bg-white/80 backdrop-blur-sm shadow-md">
-        <nav className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2">
-            <img src="/brain.svg" alt="logo" className="h-12 w-12" />
-            <h1 className="text-2xl font-bold text-blue-900">AccelNet</h1>
-          </Link>
-          <Link to="/" className="text-blue-800 hover:text-blue-600 font-medium">
-            &larr; Back to Home
-          </Link>
-        </nav>
-      </header>
-      
+    
       <main className="container mx-auto px-6 py-12">
         <h1 className="text-4xl font-bold text-blue-900 mb-8 text-center">
           Latest News

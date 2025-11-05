@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../lib/api';
 import { Link } from 'react-router-dom';
-// Note: You already had LoginPage and SignUpPage imported, 
-// but they are not used on the homepage, so I removed them.
+
 
 const HomePage = () => {
   const [latestNews, setLatestNews] = useState([]);
@@ -56,39 +55,7 @@ const HomePage = () => {
 
       {/* Content */}
       <div className="relative z-10">
-        {/* Header/Navigation */}
-        <header className="bg-white/80 backdrop-blur-sm shadow-md">
-          <nav className="container mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <Link to="/" className="flex items-center space-x-2">
-                <img 
-                  src="/brain.svg"
-                  alt='logo'
-                  className="h-12 w-12"
-                />
-                <h1 className="text-2xl font-bold text-blue-900">AccelNet</h1>
-              </Link>
-              
-              <div className="hidden md:flex space-x-8">
-                <a href="#about" className="text-blue-800 hover:text-blue-600 font-medium transition">About</a>
-                <a href="#structure" className="text-blue-800 hover:text-blue-600 font-medium transition">Structure</a>
-                <a href="#working-groups" className="text-blue-800 hover:text-blue-600 font-medium transition">Working Groups</a>
-                <a href="#activities" className="text-blue-800 hover:text-blue-600 font-medium transition">Activities</a>
-                <Link to="/news" className="text-blue-800 hover:text-blue-600 font-medium transition">News</Link>
-                <Link to="/events" className="text-blue-800 hover:text-blue-600 font-medium transition">Events</Link>
-              </div>
-
-              <div className="flex space-x-4">
-                <Link to="/login" className="text-blue-800 hover:text-blue-600 font-medium transition my-auto">
-                  Login
-                </Link>
-                <Link to="/signup" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
-                  Sign Up
-                </Link>
-              </div>
-            </div>
-          </nav>
-        </header>
+        
 
         {/* Hero Section */}
         <section className="container mx-auto px-6 py-20">
@@ -226,38 +193,6 @@ const HomePage = () => {
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="bg-blue-900 text-white mt-20">
-          <div className="container mx-auto px-6 py-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div>
-                <h4 className="text-lg font-bold mb-4">About AccelNet</h4>
-                <p className="text-blue-200">
-                  Accelerating research networks for brain-inspired computing and brain health.
-                </p>
-              </div>
-              <div>
-                <h4 className="text-lg font-bold mb-4">Quick Links</h4>
-                <ul className="space-y-2 text-blue-200">
-                  <li><a href="#" className="hover:text-white transition">Working Groups</a></li>
-                  <li><a href="#" className="hover:text-white transition">Publications</a></li>
-                  <li><Link to="/events" className="hover:text-white transition">Events</Link></li>
-                  <li><a href="#" className="hover:text-white transition">Contact</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-lg font-bold mb-4">Connect</h4>
-                <p className="text-blue-200">
-                  Join our global network of researchers and innovators.
-                </p>
-              </div>
-            </div>
-            <div className="border-t border-blue-800 mt-8 pt-6 text-center text-blue-300">
-              <p>&copy; 2025 AccelNet. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
   )

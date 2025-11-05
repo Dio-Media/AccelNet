@@ -28,9 +28,10 @@ const Navbar = () => {
           <div className="hidden md:flex space-x-8">
             <a href="#about" className="text-blue-800 hover:text-blue-600 font-medium transition">About</a>
             <a href="#structure" className="text-blue-800 hover:text-blue-600 font-medium transition">Structure</a>
-            <a href="#working-groups" className="text-blue-800 hover:text-blue-600 font-medium transition">Working Groups</a>
+            <Link to="/working-groups" className="text-blue-800 hover:text-blue-600 font-mono transition">Working Groups</Link>
             <a href="#activities" className="text-blue-800 hover:text-blue-600 font-medium transition">Activities</a>
-            <a href="#news" className="text-blue-800 hover:text-blue-600 font-medium transition">News</a>
+            <Link to="/news" className="text-blue-800 hover:text-blue-600 font-medium transition">News</Link>
+            <Link to="/events" className="text-blue-800 hover:text-blue-600 font-medium transition">Events</Link>
           </div>
 
           {/* Search, Auth, and Mobile Menu Toggle */}
