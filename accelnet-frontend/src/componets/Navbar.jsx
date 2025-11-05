@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LogOut, Menu, Search } from "lucide-react";
-import { useAuthStore } from "../store/authUser";
 // Removed useContentStore as it's no longer used
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, logout } = useAuthStore();
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
@@ -41,14 +39,6 @@ const Navbar = () => {
               <Search className='size-6 cursor-pointer' />
             </Link>
 
-            {user ? (
-              // Show Avatar and Logout if user is logged in
-              <>
-                <img src={user.image} alt='Avatar' className='h-8 w-8 rounded-full cursor-pointer' />
-                <LogOut className='size-6 cursor-pointer text-blue-800' onClick={logout} />
-              </>
-            ) : (
-              // Show Login and Sign Up if user is logged out (on desktop)
               <>
                 <Link to="/login" className="text-blue-800 hover:text-blue-600 font-medium transition hidden md:block">
                   Login
@@ -57,7 +47,7 @@ const Navbar = () => {
                   Sign Up
                 </Link>
               </>
-            )}
+            
             
             {/* Mobile Menu Button */}
             <div className="md:hidden">
@@ -77,7 +67,7 @@ const Navbar = () => {
             
             {/* Mobile Auth Links */}
             <div className="border-t border-gray-200 pt-2 space-y-2">
-              {!user && (
+
                 <>
                   <Link to="/login" className="block text-blue-800 hover:text-blue-600 p-2 rounded" onClick={toggleMobileMenu}>
                     Login
@@ -86,7 +76,7 @@ const Navbar = () => {
                     Sign Up
                   </Link>
                 </>
-              )}
+              
             </div>
           </div>
         )}

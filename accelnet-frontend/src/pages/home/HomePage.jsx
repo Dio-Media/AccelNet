@@ -1,8 +1,44 @@
-import React from 'react'
-import LoginPage from '../LoginPage'
-import SignUpPage from '../SignUpPage'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+// Note: You already had LoginPage and SignUpPage imported, 
+// but they are not used on the homepage, so I removed them.
 
 const HomePage = () => {
+  const [latestNews, setLatestNews] = useState([]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [stats, setStats] = useState({ researchers: 150, institutions: 25, publications: 50, countries: 10 });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch upcoming events (limit is 6 by default in your API)
+        const eventsRes = await axios.get('http://localhost:5000/api/events/upcoming');
+        setUpcomingEvents(eventsRes.data.data);
+
+        // Fetch latest news (limit 3)
+        const newsRes = await axios.get('http://localhost:5000/api/news?limit=3');
+        setLatestNews(newsRes.data.data);
+        
+        // Fetch statistics
+        const statsRes = await axios.get('http://localhost:5000/api/statistics');
+        if (statsRes.data.success) {
+          setStats({
+            researchers: statsRes.data.data.users || 150,
+            institutions: statsRes.data.data.organizations || 25,
+            publications: statsRes.data.data.publications || 50,
+            countries: 10 // API doesn't provide this, so we keep a static value
+          });
+        }
+
+      } catch (error) {
+        console.error("Error fetching homepage data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Background with calming blue gradient */}
@@ -24,30 +60,31 @@ const HomePage = () => {
         <header className="bg-white/80 backdrop-blur-sm shadow-md">
           <nav className="container mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
+              <Link to="/" className="flex items-center space-x-2">
                 <img 
                   src="/brain.svg"
                   alt='logo'
                   className="h-12 w-12"
                 />
                 <h1 className="text-2xl font-bold text-blue-900">AccelNet</h1>
-              </div>
+              </Link>
               
               <div className="hidden md:flex space-x-8">
                 <a href="#about" className="text-blue-800 hover:text-blue-600 font-medium transition">About</a>
                 <a href="#structure" className="text-blue-800 hover:text-blue-600 font-medium transition">Structure</a>
                 <a href="#working-groups" className="text-blue-800 hover:text-blue-600 font-medium transition">Working Groups</a>
                 <a href="#activities" className="text-blue-800 hover:text-blue-600 font-medium transition">Activities</a>
-                <a href="#news" className="text-blue-800 hover:text-blue-600 font-medium transition">News</a>
+                <Link to="/news" className="text-blue-800 hover:text-blue-600 font-medium transition">News</Link>
+                <Link to="/events" className="text-blue-800 hover:text-blue-600 font-medium transition">Events</Link>
               </div>
 
               <div className="flex space-x-4">
-                <a href="/login" className="text-blue-800 hover:text-blue-600 font-medium transition">
-                  login
-                </a>
-                <a href="/signup" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
+                <Link to="/login" className="text-blue-800 hover:text-blue-600 font-medium transition my-auto">
+                  Login
+                </Link>
+                <Link to="/signup" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
                   Sign Up
-                </a>
+                </Link>
               </div>
             </div>
           </nav>
@@ -76,6 +113,7 @@ const HomePage = () => {
 
         {/* Featured Content Cards */}
         <section className="container mx-auto px-6 py-12">
+          {/* ... Your static cards are here ... */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1 */}
             <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-lg border border-blue-100 p-6 hover:shadow-2xl transition-all duration-300">
@@ -89,9 +127,8 @@ const HomePage = () => {
                 Cutting-edge research in brain-computer interfaces and neuroscience
               </p>
             </div>
-
-            {/* Card 2 */}
-            <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-lg border border-blue-100 p-6 hover:shadow-2xl transition-all duration-300">
+            {/* ... Card 2 & 3 ... */}
+             <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-lg border border-blue-100 p-6 hover:shadow-2xl transition-all duration-300">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -102,8 +139,6 @@ const HomePage = () => {
                 Global network of researchers, artists, and industry partners
               </p>
             </div>
-
-            {/* Card 3 */}
             <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-lg border border-blue-100 p-6 hover:shadow-2xl transition-all duration-300">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,24 +153,74 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Stats Section */}
+        {/* --- NEW: Upcoming Events Section --- */}
+        <section className="container mx-auto px-6 py-12">
+          <h2 className="text-3xl font-bold text-blue-900 mb-6 text-center">Upcoming Events</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {upcomingEvents.length > 0 ? (
+              upcomingEvents.map(event => (
+                <div key={event.event_id} className="bg-white/80 backdrop-blur-sm shadow-lg rounded-lg border border-blue-100 p-5">
+                  <h3 className="text-xl font-bold text-blue-800 mb-1">{event.title}</h3>
+                  <p className="text-sm text-gray-600 font-medium mb-2">
+                    {new Date(event.start_datetime).toLocaleDateString()} - {event.location}
+                  </p>
+                  <p className="text-blue-700 text-sm truncate">{event.event_description}</p>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-blue-800 md:col-span-3">No upcoming events found.</p>
+            )}
+          </div>
+          <div className="text-center mt-8">
+            <Link to="/events" className="text-blue-600 hover:underline font-semibold">
+              View All Events &rarr;
+            </Link>
+          </div>
+        </section>
+
+        {/* --- NEW: Latest News Section --- */}
+        <section className="container mx-auto px-6 py-12">
+          <h2 className="text-3xl font-bold text-blue-900 mb-6 text-center">Latest News</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {latestNews.length > 0 ? (
+              latestNews.map(article => (
+                <div key={article.news_id} className="bg-white/80 backdrop-blur-sm shadow-lg rounded-lg border border-blue-100 p-5">
+                  <h3 className="text-xl font-bold text-blue-800 mb-1">{article.title}</h3>
+                  <p className="text-sm text-gray-600 font-medium mb-2">
+                    {new Date(article.created_at).toLocaleDateString()}
+                  </p>
+                  <p className="text-blue-700 text-sm">{article.excerpt}</p>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-blue-800 md:col-span-3">No news found.</p>
+            )}
+          </div>
+           <div className="text-center mt-8">
+            <Link to="/news" className="text-blue-600 hover:underline font-semibold">
+              View All News &rarr;
+            </Link>
+          </div>
+        </section>
+
+        {/* Stats Section - Now uses dynamic stats */}
         <section className="container mx-auto px-6 py-12">
           <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-lg border border-blue-100 p-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div>
-                <p className="text-4xl font-bold text-blue-600">150+</p>
+                <p className="text-4xl font-bold text-blue-600">{stats.researchers}</p>
                 <p className="text-blue-800 font-medium mt-2">Researchers</p>
               </div>
               <div>
-                <p className="text-4xl font-bold text-blue-600">25+</p>
+                <p className="text-4xl font-bold text-blue-600">{stats.institutions}</p>
                 <p className="text-blue-800 font-medium mt-2">Institutions</p>
               </div>
               <div>
-                <p className="text-4xl font-bold text-blue-600">50+</p>
+                <p className="text-4xl font-bold text-blue-600">{stats.publications}</p>
                 <p className="text-blue-800 font-medium mt-2">Publications</p>
               </div>
               <div>
-                <p className="text-4xl font-bold text-blue-600">10+</p>
+                <p className="text-4xl font-bold text-blue-600">{stats.countries}</p>
                 <p className="text-blue-800 font-medium mt-2">Countries</p>
               </div>
             </div>
@@ -157,7 +242,7 @@ const HomePage = () => {
                 <ul className="space-y-2 text-blue-200">
                   <li><a href="#" className="hover:text-white transition">Working Groups</a></li>
                   <li><a href="#" className="hover:text-white transition">Publications</a></li>
-                  <li><a href="#" className="hover:text-white transition">Events</a></li>
+                  <li><Link to="/events" className="hover:text-white transition">Events</Link></li>
                   <li><a href="#" className="hover:text-white transition">Contact</a></li>
                 </ul>
               </div>
