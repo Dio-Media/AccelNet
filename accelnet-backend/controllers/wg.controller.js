@@ -1,10 +1,7 @@
-// accelnet-backend/controllers/wg.controller.js
 import { pool } from '../config/db.js';
 
-// Renamed from getAllNews to getAllWGs
 export async function getAllWGs(req, res) {
     try {
-        // Query the 'working_groups' table and filter for active ones
         const [wgs] = await pool.execute(
             `SELECT wg_id, wg_code, wg_name, wg_description, focus_area 
              FROM working_groups 
@@ -24,5 +21,3 @@ export async function getAllWGs(req, res) {
         });
     }
 }
-
-// You can add getWGById, createWG, etc. here later

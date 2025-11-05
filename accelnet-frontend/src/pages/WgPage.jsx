@@ -12,7 +12,7 @@ export default function WgPage() {
     const load = async () => {
       try {
         setLoading(true);
-        const res = await api.get("/wg"); // <-- FETCH FROM /wg
+        const res = await api.get("/working-groups"); // <-- FETCH FROM /wg
         
         setWorkingGroups(res.data.data || []); // Set the new state
         setError(null);
