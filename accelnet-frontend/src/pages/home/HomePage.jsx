@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../lib/api';
 import { Link } from 'react-router-dom';
 // Note: You already had LoginPage and SignUpPage imported, 
 // but they are not used on the homepage, so I removed them.
@@ -13,15 +13,15 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         // Fetch upcoming events (limit is 6 by default in your API)
-        const eventsRes = await axios.get('http://localhost:5000/api/events/upcoming');
+        const eventsRes = await api.get('/events/upcoming');
         setUpcomingEvents(eventsRes.data.data);
 
         // Fetch latest news (limit 3)
-        const newsRes = await axios.get('http://localhost:5000/api/news?limit=3');
+        const newsRes = await api.get('/news?limit=3');
         setLatestNews(newsRes.data.data);
         
         // Fetch statistics
-        const statsRes = await axios.get('http://localhost:5000/api/statistics');
+        const statsRes = await api.get('/statistics');
         if (statsRes.data.success) {
           setStats({
             researchers: statsRes.data.data.users || 150,
