@@ -55,7 +55,7 @@ const LoginPage = () => {
 							className='w-full py-2 bg-blue-600 text-white font-semibold rounded-md
 							hover:bg-blue-700'
 						>
-              Sign Up
+							Login
 						</button>
 					</form>
 					<div className='text-center text-gray-400'>

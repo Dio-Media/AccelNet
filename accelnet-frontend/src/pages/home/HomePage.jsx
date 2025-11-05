@@ -1,6 +1,6 @@
 import React from 'react'
-import LoginPage from './LoginPage'
-import SignUpPage from './SignUpPage'
+import LoginPage from '../LoginPage'
+import SignUpPage from '../SignUpPage'
 
 const HomePage = () => {
   return (
