@@ -26,12 +26,12 @@ const Navbar = () => {
           
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex space-x-8">
-            <a href="#about" className="text-blue-800 hover:text-blue-600 font-medium transition">About</a>
-            <a href="#structure" className="text-blue-800 hover:text-blue-600 font-medium transition">Structure</a>
-            <Link to="/working-groups" className="text-blue-800 hover:text-blue-600 font-mono transition">Working Groups</Link>
-            <a href="#activities" className="text-blue-800 hover:text-blue-600 font-medium transition">Activities</a>
-            <Link to="/news" className="text-blue-800 hover:text-blue-600 font-medium transition">News</Link>
-            <Link to="/events" className="text-blue-800 hover:text-blue-600 font-medium transition">Events</Link>
+            <a href="#about" className="text-blue-800 hover:text-blue-600 font-bold transition">About</a>
+            <a href="#structure" className="text-blue-800 hover:text-blue-600 font-bold transition">Structure</a>
+            <Link to="/working-groups" className="text-blue-800 hover:text-blue-600 font-bold transition">Working Groups</Link>
+            <a href="#activities" className="text-blue-800 hover:text-blue-600 font-bold transition">Activities</a>
+            <Link to="/news" className="text-blue-800 hover:text-blue-600 font-bold transition">News</Link>
+            <Link to="/events" className="text-blue-800 hover:text-blue-600 font-bold transition">Events</Link>
           </div>
 
           {/* Search, Auth, and Mobile Menu Toggle */}

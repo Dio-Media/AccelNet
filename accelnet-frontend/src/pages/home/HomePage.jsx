@@ -55,8 +55,6 @@ const HomePage = () => {
 
       {/* Content */}
       <div className="relative z-10">
-        
-
         {/* Hero Section */}
         <section className="container mx-auto px-6 py-20">
           <div className="max-w-4xl mx-auto text-center">
@@ -71,9 +69,9 @@ const HomePage = () => {
               <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
                 Explore Research
               </button>
-              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-blue-800 font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl border border-blue-200">
+              <Link to='/signup' className="bg-white/80 backdrop-blur-sm hover:bg-white text-blue-800 font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl border border-blue-200">
                 Join Network
-              </button>
+              </Link>
             </div>
           </div>
         </section>
