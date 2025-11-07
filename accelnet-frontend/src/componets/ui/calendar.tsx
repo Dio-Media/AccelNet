@@ -60,12 +60,25 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ className, ...props }: React.ComponentProps<"svg">) => (
-          <ChevronLeft className={cn("size-4", className)} {...props} />
-        ),
-        IconRight: ({ className, ...props }: React.ComponentProps<"svg">) => (
-          <ChevronRight className={cn("size-4", className)} {...props} />
-        ),
+        // v9 uses a single Chevron component instead of IconLeft/IconRight
+        Chevron(props) {
+          if (props.orientation === "left") {
+            return (
+              <ChevronLeft
+                className={cn("size-4", props.className)}
+                aria-hidden="true"
+              />
+            );
+          }
+
+          // default/right
+          return (
+            <ChevronRight
+              className={cn("size-4", props.className)}
+              aria-hidden="true"
+            />
+          );
+        },
       }}
       {...props}
     />

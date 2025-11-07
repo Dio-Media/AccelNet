@@ -260,6 +260,8 @@ function ChartLegendContent({
   nameKey,
 }: React.ComponentProps<"div"> &
   Partial<RechartsPrimitive.LegendProps> & {
+    payload?: any[];
+    verticalAlign?: "top" | "middle" | "bottom";
     hideIcon?: boolean;
     nameKey?: string;
   }) {
