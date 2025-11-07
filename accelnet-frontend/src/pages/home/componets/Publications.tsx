@@ -1,7 +1,7 @@
-import { Card } from './ui/card';
-import { Badge } from './ui/badge';
+import { Card } from '../../../componets/ui/card';
+import { Badge } from '../../../componets/ui/badge';
 import { ExternalLink, Download } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../../../componets/ui/button';
 
 export function Publications() {
   const publications = [

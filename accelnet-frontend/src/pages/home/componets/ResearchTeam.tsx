@@ -1,5 +1,5 @@
-import { Card } from './ui/card';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { Card } from '../../../componets/ui/card';
+import { ImageWithFallback } from '../../../componets/ImageWithFallback';
 
 export function ResearchTeam() {
   const team = [

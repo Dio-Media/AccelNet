@@ -1,4 +1,4 @@
-import { Card } from './ui/card';
+import { Card } from '../../../componets/ui/card';
 import { FileText, TrendingUp, Users, MapPin } from 'lucide-react';
 
 export function ResearchFindings() {

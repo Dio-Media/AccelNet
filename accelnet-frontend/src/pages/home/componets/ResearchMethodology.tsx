@@ -1,5 +1,5 @@
-import { Card } from './ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Card } from '../../../componets/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../componets/ui/tabs';
 
 export function ResearchMethodology() {
   return (

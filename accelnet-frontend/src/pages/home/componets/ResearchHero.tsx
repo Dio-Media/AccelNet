@@ -1,4 +1,4 @@
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { ImageWithFallback } from '../../../componets/ImageWithFallback';
 
 export function ResearchHero() {
   return (
