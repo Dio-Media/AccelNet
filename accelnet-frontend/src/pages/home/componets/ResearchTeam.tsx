@@ -54,7 +54,7 @@ const ResearchTeam: React.FC = () => {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-6">
         <h2 className="text-2xl md:text-3xl font-semibold text-center text-gray-900 mb-4">
-          Research Team
+          Accelnet Participants
         </h2>
         <p className="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
           Our interdisciplinary team brings together expertise across engineering,

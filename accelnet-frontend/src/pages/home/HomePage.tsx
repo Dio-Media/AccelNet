@@ -3,7 +3,7 @@ import { ResearchFindings } from './componets/ResearchFindings';
 import { DataVisualization } from './componets/DataVisualization';
 import { ResearchMethodology } from './componets/ResearchMethodology';
 import { Publications } from './componets/Publications';
-import { ResearchTeam } from './componets/ResearchTeam';
+import  ResearchTeam  from './componets/ResearchTeam';
 
 // We do NOT import the ResearchFooter, because your Layout.jsx already adds your site-wide footer.
 

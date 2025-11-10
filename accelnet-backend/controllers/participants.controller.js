@@ -7,7 +7,7 @@ import pool from '../config/db.js';
  * You can override limit with ?limit=8 if needed.
  */
 export const getHomepageParticipants = async (req, res) => {
-  const limit = Number(req.query.limit) || 5;
+  const limit = Number(req.query.limit) || 4;
 
   try {
     const [rows] = await pool.query(
@@ -22,7 +22,7 @@ export const getHomepageParticipants = async (req, res) => {
         orcid,
         google_scholar_id
       FROM v_participants
-      ORDER BY id
+      ORDER BY RAND()
       LIMIT ?
       `,
       [limit]
