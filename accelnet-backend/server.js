@@ -4,6 +4,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { connectDB, pool } from './config/db.js';
 import { ENV_VARS } from './config/envVars.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Import routes
 import authRoutes from './routes/auth.route.js';
@@ -12,7 +14,11 @@ import eventsRoutes from './routes/events.route.js';
 import workingGroupRoutes from './routes/wg.route.js';
 import participantsRoutes from './routes/participants.routes.js'
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ==================== MIDDLEWARE ====================
 app.use(cors({

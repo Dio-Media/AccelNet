@@ -13,23 +13,24 @@ export const getHomepageParticipants = async (req, res) => {
     const [rows] = await pool.query(
       `
       SELECT
-        id,
+        participant_id,
         full_name,
         role,
         institution,
         department,
         academic_rank,
         orcid,
-        google_scholar_id
+        google_scholar_id,
+        photo_url
       FROM v_participants
-      ORDER BY RAND()
+      ORDER BY participant_id
       LIMIT ?
       `,
       [limit]
     );
 
     const data = rows.map((row) => ({
-      id: row.id,
+      id: row.participant_id,
       name: row.full_name,
       role: row.role || row.academic_rank || null,
       affiliation: row.institution || null,
@@ -37,6 +38,7 @@ export const getHomepageParticipants = async (req, res) => {
       academicRank: row.academic_rank || null,
       orcid: row.orcid || null,
       googleScholarId: row.google_scholar_id || null,
+      photo_url: row.photo_url || null
     }));
 
     res.json({ data });
