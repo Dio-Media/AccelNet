@@ -10,6 +10,7 @@ import authRoutes from './routes/auth.route.js';
 import newsRoutes from './routes/news.route.js';
 import eventsRoutes from './routes/events.route.js';
 import workingGroupRoutes from './routes/wg.route.js';
+import participantsRoutes from './routes/participants.routes.js'
 
 const app = express();
 
@@ -47,6 +48,9 @@ app.use('/api/events', eventsRoutes);
 
 // Working Groups routes
 app.use('/api/working-groups', workingGroupRoutes);
+
+// Participants routes
+app.use('/api/participants', participantsRoutes);
 
 // Statistics endpoint
 app.get('/api/statistics', async (req, res) => {
