@@ -13,6 +13,7 @@ import newsRoutes from './routes/news.route.js';
 import eventsRoutes from './routes/events.route.js';
 import workingGroupRoutes from './routes/wg.route.js';
 import participantsRoutes from './routes/participants.routes.js'
+import publicationsRoutes from './routes/publications.route.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,6 +58,9 @@ app.use('/api/working-groups', workingGroupRoutes);
 
 // Participants routes
 app.use('/api/participants', participantsRoutes);
+
+//Publication routes
+app.use('/api/publications', publicationsRoutes);
 
 // Statistics endpoint
 app.get('/api/statistics', async (req, res) => {

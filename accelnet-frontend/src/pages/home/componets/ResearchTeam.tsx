@@ -10,6 +10,7 @@ type Participant = {
   academicRank?: string | null;
   orcid?: string | null;
   googleScholarId?: string | null;
+  photo_url?:string | null;
 };
 
 const ResearchTeam: React.FC = () => {
@@ -85,7 +86,7 @@ const ResearchTeam: React.FC = () => {
                 {/* Initials circle */}
                 <div className="w-24 h-24 rounded-full mb-4 flex items-center justify-center bg-blue-50">
                   <span className="text-xl font-semibold text-blue-600">
-                    {renderInitials(person.name)}
+                    {person.photo_url}
                   </span>
                 </div>
 

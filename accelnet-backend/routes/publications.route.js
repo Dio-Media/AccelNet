@@ -1,19 +1,16 @@
-// accelnet-backend/routes/publications.route.js - FIXED
-import express from 'express';
-import { 
-    getAllPublications,  
-    getPublicationsById,
-    getPublicationsByTitle,
-    
-} from '../controllers/publications.controller.js';
-import { protectRoute } from '../middleware/protect.route.js';
+// routes/publications.route.js
+import express from "express";
+import {
+  getAllPublications,
+  getPublicationsByTitle,
+} from "../controllers/publications.controller.js";
 
 const router = express.Router();
 
-// Public routes
-router.get('/', getAllPublications);
-router.get('/:id', getPublicationsById);
-router.get('/title/:title', getPublicationsByTitle);
+// GET /api/publications
+router.get("/", getAllPublications);
 
+// GET /api/publications/search?title=...
+router.get("/search", getPublicationsByTitle);
 
 export default router;
