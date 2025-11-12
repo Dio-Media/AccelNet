@@ -10,7 +10,7 @@ const SignUpPage = () => {
   const [last_name, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [signup] = useAuthStore();
+  const { signup, isSignUp } = useAuthStore();
   const navigate = useNavigate(); // 5. Get the navigate function
 
   const handleSignUp = async (e) => { // 6. Make the function async
