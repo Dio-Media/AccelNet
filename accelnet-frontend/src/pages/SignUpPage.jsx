@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"; // 1. Import useNavigate
 import React from "react";
 import { useState } from "react";
-import api from "../lib/api"; // 2. Import your api instance
+import { useAuthStore } from "../store/useAuthStore";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +9,8 @@ const SignUpPage = () => {
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // 4. Add error state
+  const [error, setError] = useState("");
+  const [signup] = useAuthStore();
   const navigate = useNavigate(); // 5. Get the navigate function
 
   const handleSignUp = async (e) => { // 6. Make the function async
@@ -23,19 +24,11 @@ const SignUpPage = () => {
     }
 
     try {
-      // 7. Call your backend API with the correct fields
-      const res = await api.post("/auth/signup", {
-        email,
-        password,
-        first_name,
-        last_name,
-      });
-
-      if (res.data.success) {
-        // 8. On success, navigate to the homepage!
-        navigate("/");
-      } else {
-        setError(res.data.message || "Sign up failed. Please try again.");
+      const result = await signup({email, password, first_name, last_name});
+      if(result?.success){
+        navigate('/');
+      }else{
+        setError(result?.message || "Sign up failed. Please try again.")
       }
     } catch (err) {
       console.error(err);

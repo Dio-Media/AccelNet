@@ -1,6 +1,42 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Search } from "lucide-react";
+import { useAuthStore } from "../store/useAuthStore"
+import { useNavigate } from "react-router-dom";
+
+function AuthActions() {
+  const { user, logout, isLoggingOut } = useAuthStore();
+  const navigate = useNavigate();
+
+  if (!user) {
+    return (
+      <div className="hidden md:flex items-center space-x-4">
+        <Link to="/login" className="text-blue-800 hover:text-blue-600 font-medium transition-colors">
+          Login
+        </Link>
+        <Link to="/signup" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 shadow hover:shadow-lg">
+          Sign Up
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="hidden md:flex items-center space-x-4">
+      <span className="text-sm text-gray-700">
+        {user.first_name || user.name || user.email}
+      </span>
+      <button
+        onClick={async () => { await logout(); navigate("/"); }}
+        disabled={isLoggingOut}
+        className="text-blue-800 hover:text-blue-600 font-medium transition-colors"
+      >
+        {isLoggingOut ? "Logging out…" : "Logout"}
+      </button>
+    </div>
+  );
+}
+
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,15 +67,6 @@ const Navbar = () => {
         { 
           path: "/participants", 
           label: "Participants",
-          subItems: [
-            "Science",
-            "Engineering", 
-            "Art",
-            "Humanities",
-            "Industry",
-            "Government", 
-            "Media"
-          ]
         }
       ]
     },
@@ -139,14 +166,7 @@ const Navbar = () => {
             </Link>
 
             {/* Auth Links */}
-            <div className="hidden md:flex items-center space-x-4">
-              <Link to="/login" className="text-blue-800 hover:text-blue-600 font-medium transition-colors">
-                Login
-              </Link>
-              <Link to="/signup" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 shadow hover:shadow-lg">
-                Sign Up
-              </Link>
-            </div>
+            <AuthActions />
             
             {/* Mobile Menu Toggle */}
             <button 
