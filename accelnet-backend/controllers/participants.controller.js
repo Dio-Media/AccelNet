@@ -1,10 +1,8 @@
-// controllers/participants.controller.js
-import pool from '../config/db.js';
+import { pool } from '../config/db.js';
 
 /**
  * GET /api/participants/homepage
  * Returns a small set of participants for the homepage.
- * You can override limit with ?limit=8 if needed.
  */
 export const getHomepageParticipants = async (req, res) => {
   const limit = Number(req.query.limit) || 4;
@@ -68,16 +66,18 @@ export const getAllParticipants = async (req, res) => {
   const limitNum = Math.min(100, Math.max(1, Number(limit) || 20));
   const offset = (pageNum - 1) * limitNum;
 
+  // FIXED: Changed 'id' to 'participant_id' to match your DB schema
   let sql = `
     SELECT
-      id,
+      participant_id, 
       full_name,
       role,
       institution,
       department,
       academic_rank,
       orcid,
-      google_scholar_id
+      google_scholar_id,
+      photo_url
     FROM v_participants
     WHERE 1 = 1
   `;
@@ -104,8 +104,9 @@ export const getAllParticipants = async (req, res) => {
   try {
     const [rows] = await pool.query(sql, params);
 
+    // FIXED: Map 'participant_id' to 'id' for the frontend
     const data = rows.map((row) => ({
-      id: row.id,
+      id: row.participant_id, 
       name: row.full_name,
       role: row.role || row.academic_rank || null,
       affiliation: row.institution || null,
@@ -113,14 +114,19 @@ export const getAllParticipants = async (req, res) => {
       academicRank: row.academic_rank || null,
       orcid: row.orcid || null,
       googleScholarId: row.google_scholar_id || null,
+      photo_url: row.photo_url || null
     }));
+
+    // Get total count for pagination
+    const [countResult] = await pool.query('SELECT COUNT(*) as total FROM v_participants');
+    const total = countResult[0]?.total || 0;
 
     res.json({
       data,
       pagination: {
         page: pageNum,
         limit: limitNum,
-        count: data.length,
+        count: total,
       },
     });
   } catch (err) {

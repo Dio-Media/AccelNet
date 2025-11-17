@@ -7,6 +7,7 @@ import EventsPage from './pages/Events.jsx';
 import WgPage from './pages/WgPage.jsx';
 import About from './pages/AboutPage.jsx';
 import Layout from './componets/Layout.jsx';
+import Participants from './pages/ParticipantsPage.jsx'
 
 
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/events" element={<EventsPage />} />
         <Route path="/working-groups" element={<WgPage />} />
         <Route path="/about" element={<About />} />
+        <Route path="/participants" element={<Participants />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
