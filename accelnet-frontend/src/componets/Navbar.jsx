@@ -45,16 +45,7 @@ const Navbar = () => {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const navLinks = [
-    { 
-      path: "/about", 
-      label: "About", 
-      dropdown: true,
-      items: [
-        { path: "/vision-mission", label: "Vision and Mission" },
-        { path: "/background", label: "Background" },
-        { path: "/scientific-program", label: "Scientific Program" }
-      ]
-    },
+    { path: "/about", label: "About"},
     { 
       path: "/structure", 
       label: "Structure", 
@@ -131,11 +122,11 @@ const Navbar = () => {
           {/* Logo and Brand */}
           <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
             <img 
-              src="/brain.svg"
+              src="/anlogo-removebg-preview.png"
               alt="AccelNet Logo"
               className="h-10 w-10 md:h-12 md:w-12"
             />
-            <h1 className="text-xl md:text-2xl font-bold text-blue-900">AccelNet</h1>
+            <h1 className="text-xl md:text-2xl font-extralight text-gray-800"> AccelNet</h1>
           </Link>
           
           {/* Desktop Navigation */}

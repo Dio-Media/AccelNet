@@ -127,25 +127,6 @@ app.get('/api/grants', async (req, res) => {
     }
 });
 
-// Publications endpoint
-app.get('/api/publications', async (req, res) => {
-    try {
-        const [pubs] = await pool.execute(
-            `SELECT publication_id, title, publication_type, 
-                    publication_date, doi, abstract, is_featured 
-             FROM publications 
-             ORDER BY publication_date DESC 
-             LIMIT 10`
-        );
-        res.json({ success: true, data: pubs });
-    } catch (error) {
-        console.error('Error fetching publications:', error.message);
-        res.status(500).json({
-            success: false,
-            message: 'Internal Server Error'
-        });
-    }
-});
 
 // ==================== ERROR HANDLING ====================
 app.use((err, req, res, next) => {
