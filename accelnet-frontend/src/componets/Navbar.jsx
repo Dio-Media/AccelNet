@@ -62,9 +62,10 @@ const Navbar = () => {
       ]
     },
     { path: "/working-groups", label: "Working Groups" },
-    { path: "/activities", label: "Activities" },
+    { path: "/grants", label: "Grants" },
     { path: "/news", label: "News" },
     { path: "/events", label: "Events" },
+    { path: "/grants", lable: "Grants"},
   ];
 
   const renderDropdown = (link) => (

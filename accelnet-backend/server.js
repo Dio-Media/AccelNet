@@ -113,7 +113,7 @@ app.get('/api/grants', async (req, res) => {
         const [grants] = await pool.execute(
             `SELECT grant_id, title, grant_type, description, 
                     funding_amount, application_deadline 
-             FROM grants 
+             FROM angrants 
              ORDER BY application_deadline DESC 
              LIMIT 10`
         );

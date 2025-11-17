@@ -8,6 +8,8 @@ import WgPage from './pages/WgPage.jsx';
 import About from './pages/AboutPage.jsx';
 import Layout from './componets/Layout.jsx';
 import Participants from './pages/ParticipantsPage.jsx'
+import Grants from './pages/GrantPage.jsx'
+import Organizations from './pages/OrganizationsPage.jsx'
 
 
 
@@ -21,6 +23,8 @@ function App() {
         <Route path="/working-groups" element={<WgPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/participants" element={<Participants />} />
+        <Route path="/grants" element={<Grants />}/>
+        <Route path="/organizations" element={<Organizations />}/>
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
