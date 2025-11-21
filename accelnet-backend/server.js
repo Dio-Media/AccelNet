@@ -9,11 +9,13 @@ import { fileURLToPath } from 'url';
 
 // Import routes
 import authRoutes from './routes/auth.route.js';
+import grantRoutes from './routes/grants.route.js'
 import newsRoutes from './routes/news.route.js';
 import eventsRoutes from './routes/events.route.js';
 import workingGroupRoutes from './routes/wg.route.js';
 import participantsRoutes from './routes/participants.routes.js'
 import publicationsRoutes from './routes/publications.route.js'
+import organizationRoutes from './routes/organizations.route.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +64,12 @@ app.use('/api/participants', participantsRoutes);
 //Publication routes
 app.use('/api/publications', publicationsRoutes);
 
+//Organization Routes
+app.use('/api/organizations', organizationRoutes);
+
+//Grants Routes
+app.use('/api/grants', grantRoutes);
+
 // Statistics endpoint
 app.get('/api/statistics', async (req, res) => {
     try {
@@ -81,45 +89,6 @@ app.get('/api/statistics', async (req, res) => {
         });
     } catch (error) {
         console.error('Error fetching statistics:', error.message);
-        res.status(500).json({
-            success: false,
-            message: 'Internal Server Error'
-        });
-    }
-});
-
-// Organizations endpoint
-app.get('/api/organizations', async (req, res) => {
-    try {
-        const [orgs] = await pool.execute(
-            `SELECT org_id, org_name, org_type, country, website_url, 
-                    logo_url, org_description 
-             FROM organizations 
-             LIMIT 20`
-        );
-        res.json({ success: true, data: orgs });
-    } catch (error) {
-        console.error('Error fetching organizations:', error.message);
-        res.status(500).json({
-            success: false,
-            message: 'Internal Server Error'
-        });
-    }
-});
-
-// Grants endpoint
-app.get('/api/grants', async (req, res) => {
-    try {
-        const [grants] = await pool.execute(
-            `SELECT grant_id, title, grant_type, description, 
-                    funding_amount, application_deadline 
-             FROM angrants 
-             ORDER BY application_deadline DESC 
-             LIMIT 10`
-        );
-        res.json({ success: true, data: grants });
-    } catch (error) {
-        console.error('Error fetching grants:', error.message);
         res.status(500).json({
             success: false,
             message: 'Internal Server Error'
