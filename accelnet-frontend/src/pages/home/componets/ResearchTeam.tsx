@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Card } from '../../../componets/ui/card'; // <-- correct relative path
+import { Card } from '../../../componets/ui/card';
+import api from '../../../lib/api'; // Import your configured API client
 
 type Participant = {
   id: number;
@@ -24,14 +25,14 @@ const ResearchTeam: React.FC = () => {
         setLoading(true);
         setError(null);
 
-        const res = await fetch('/api/participants/homepage');
+        // Use api.get instead of fetch to ensure it uses the backend URL
+        const res = await api.get('/participants/homepage');
 
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-
-        const json: { data?: Participant[] } = await res.json();
-        setTeam(Array.isArray(json.data) ? json.data : []);
+        // Axios stores the response data in res.data
+        // Your backend sends { data: [...] }, so we access res.data.data
+        const participants = res.data.data;
+        
+        setTeam(Array.isArray(participants) ? participants : []);
       } catch (err) {
         console.error('Failed to load homepage participants:', err);
         setError('Unable to load participants at this time.');
@@ -83,11 +84,19 @@ const ResearchTeam: React.FC = () => {
                 key={person.id}
                 className="flex flex-col items-center text-center p-6 rounded-3xl shadow-sm bg-white"
               >
-                {/* Initials circle */}
-                <div className="w-24 h-24 rounded-full mb-4 flex items-center justify-center bg-blue-50">
-                  <span className="text-xl font-semibold text-blue-600">
-                    {person.photo_url}
-                  </span>
+                {/* Photo or Initials */}
+                <div className="w-24 h-24 rounded-full mb-4 flex items-center justify-center bg-blue-50 overflow-hidden">
+                  {person.photo_url ? (
+                     <img 
+                       src={person.photo_url} 
+                       alt={person.name} 
+                       className="w-full h-full object-cover"
+                     />
+                  ) : (
+                    <span className="text-xl font-semibold text-blue-600">
+                      {getInitials(person.name)}
+                    </span>
+                  )}
                 </div>
 
                 {/* Name */}
@@ -119,5 +128,16 @@ const ResearchTeam: React.FC = () => {
     </section>
   );
 };
+
+// Helper for initials if needed
+function getInitials(name: string) {
+    return name
+      .split(' ')
+      .filter(Boolean)
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+}
 
 export default ResearchTeam;
