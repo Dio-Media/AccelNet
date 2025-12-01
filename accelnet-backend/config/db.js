@@ -5,6 +5,7 @@ import { ENV_VARS } from './envVars.js';
 export const pool = mysql.createPool({
     host: ENV_VARS.DB_HOST,
     user: ENV_VARS.DB_USER,
+    port: ENV_VARS.DB_PORT,
     password: ENV_VARS.DB_PASSWORD,
     database: ENV_VARS.DB_NAME,
     waitForConnections: true,
