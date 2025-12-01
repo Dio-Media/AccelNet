@@ -27,10 +27,6 @@ export function ResearchHero() {
                 <div className="text-white">35+</div>
                 <div>Skilled professonals</div>
               </div>
-              <div className="border-l border-white/30 pl-4">
-                <div className="text-white">Year round</div>
-                <div>Research Period</div>
-              </div>
             </div>
           </div>
         </div>

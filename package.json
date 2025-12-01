@@ -4,7 +4,8 @@
   "description": "AccelNet - the start of a new website",
   "main": "accelnet-backend/server.js",
   "scripts": {
-    "dev": "node --watch accelnet-backend/server.js"
+    "dev": "node --watch accelnet-backend/server.js",
+    "start": "node accelnet-backend/server.js"
   },
   "keywords": [],
   "author": "",
