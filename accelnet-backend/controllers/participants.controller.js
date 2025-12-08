@@ -19,8 +19,8 @@ export const getHomepageParticipants = async (req, res) => {
         academic_rank,
         orcid,
         google_scholar_id,
-        photo_url
-      FROM v_participants
+        pfp
+      FROM participants
       ORDER BY participant_id
       LIMIT ?
       `,
@@ -36,7 +36,7 @@ export const getHomepageParticipants = async (req, res) => {
       academicRank: row.academic_rank || null,
       orcid: row.orcid || null,
       googleScholarId: row.google_scholar_id || null,
-      photo_url: row.photo_url || null
+      pfp: row.pfp || null
     }));
 
     res.json({ data });
