@@ -12,7 +12,8 @@ export const getHomepageParticipants = async (req, res) => {
       `
       SELECT
         participant_id,
-        full_name,
+        first_name,
+        last_name,
         role,
         institution,
         department,
@@ -29,14 +30,14 @@ export const getHomepageParticipants = async (req, res) => {
 
     const data = rows.map((row) => ({
       id: row.participant_id,
-      name: row.full_name,
+      name: `${row.first_name} ${row.last_name}`,
       role: row.role || row.academic_rank || null,
       affiliation: row.institution || null,
       specialty: row.department || null,
       academicRank: row.academic_rank || null,
       orcid: row.orcid || null,
       googleScholarId: row.google_scholar_id || null,
-      pfp: row.pfp || null
+      pfp: row.pfp ? 'data:image/jpeg;base64,' + row.pfp.toString('base64') : null
     }));
 
     res.json({ data });
@@ -66,11 +67,11 @@ export const getAllParticipants = async (req, res) => {
   const limitNum = Math.min(100, Math.max(1, Number(limit) || 20));
   const offset = (pageNum - 1) * limitNum;
 
-  // FIXED: Changed 'id' to 'participant_id' to match your DB schema
   let sql = `
     SELECT
       participant_id, 
-      full_name,
+      first_name,
+      last_name,
       role,
       institution,
       department,
@@ -94,27 +95,26 @@ export const getAllParticipants = async (req, res) => {
   }
 
   if (search) {
-    sql += ' AND full_name LIKE ?';
+    sql += ' AND CONCAT(first_name, " ", last_name) LIKE ?';
     params.push(`%${search}%`);
   }
 
-  sql += ' ORDER BY full_name ASC LIMIT ? OFFSET ?';
+  sql += ' ORDER BY last_name ASC LIMIT ? OFFSET ?';
   params.push(limitNum, offset);
 
   try {
     const [rows] = await pool.query(sql, params);
 
-    // FIXED: Map 'participant_id' to 'id' for the frontend
     const data = rows.map((row) => ({
       id: row.participant_id, 
-      name: row.full_name,
+      name: `${row.first_name} ${row.last_name}`,
       role: row.role || row.academic_rank || null,
       affiliation: row.institution || null,
       specialty: row.department || null,
       academicRank: row.academic_rank || null,
       orcid: row.orcid || null,
       googleScholarId: row.google_scholar_id || null,
-      pfp: row.pfp || null
+      pfp: row.pfp ? 'data:image/jpeg;base64,' + row.pfp.toString('base64') : null
     }));
 
     // Get total count for pagination
