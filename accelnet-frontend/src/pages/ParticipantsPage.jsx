@@ -146,9 +146,9 @@ const ParticipantsPage = () => {
                     {/* Avatar / Initials */}
                     <div className="relative mb-6">
                       <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-lg bg-blue-50 flex items-center justify-center">
-                        {person.photo_url ? (
+                        {person.pfp ? (
                           <img 
-                            src={person.photo_url} 
+                            src={person.pfp} 
                             alt={person.name}
                             className="w-full h-full object-cover"
                             onError={(e) => {

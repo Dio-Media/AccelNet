@@ -77,8 +77,8 @@ export const getAllParticipants = async (req, res) => {
       academic_rank,
       orcid,
       google_scholar_id,
-      photo_url
-    FROM v_participants
+      pfp
+    FROM participants
     WHERE 1 = 1
   `;
   const params = [];
@@ -114,11 +114,11 @@ export const getAllParticipants = async (req, res) => {
       academicRank: row.academic_rank || null,
       orcid: row.orcid || null,
       googleScholarId: row.google_scholar_id || null,
-      photo_url: row.photo_url || null
+      pfp: row.pfp || null
     }));
 
     // Get total count for pagination
-    const [countResult] = await pool.query('SELECT COUNT(*) as total FROM v_participants');
+    const [countResult] = await pool.query('SELECT COUNT(*) as total FROM participants');
     const total = countResult[0]?.total || 0;
 
     res.json({
