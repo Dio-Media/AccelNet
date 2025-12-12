@@ -10,20 +10,21 @@ export const getHomepageParticipants = async (req, res) => {
   try {
     const [rows] = await pool.query(
       `
-      SELECT
-        participant_id,
-        first_name,
-        last_name,
-        role,
-        institution,
-        department,
-        academic_rank,
-        orcid,
-        google_scholar_id,
-        pfp
-      FROM participants
-      ORDER BY participant_id
-      LIMIT ?
+    SELECT
+      p.participant_id,
+      p.first_name,
+      p.last_name,
+      p.role,
+      p.department,
+      p.academic_rank,
+      p.orcid,
+      p.google_scholar_id,
+      p.pfp,
+      o.org_name AS institution
+    FROM participants p
+    LEFT JOIN organizations o ON o.org_id = p.org_id
+    ORDER BY RAND()
+    LIMIT ?
       `,
       [limit]
     );
@@ -37,7 +38,7 @@ export const getHomepageParticipants = async (req, res) => {
       academicRank: row.academic_rank || null,
       orcid: row.orcid || null,
       googleScholarId: row.google_scholar_id || null,
-      pfp: row.pfp ? 'data:image/jpeg;base64,' + row.pfp.toString('base64') : null
+      pfp: row.pfp ? `data:image/jpeg;base64,${row.pfp.toString("base64")}` : null,
     }));
 
     res.json({ data });
@@ -96,7 +97,7 @@ export const getAllParticipants = async (req, res) => {
     params.push(`%${search}%`);
   }
 
-  sql += ` ORDER BY p.last_name ASC LIMIT ? OFFSET ?`;
+  sql += ` ORDER BY p.first_name ASC LIMIT ? OFFSET ?`;
   params.push(limitNum, offset);
 
   try {

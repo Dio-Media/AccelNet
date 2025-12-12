@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import api from "../lib/api"; // Using your configured API client
+
 import { Card } from "../componets/ui/card";
 import { Input } from "../componets/ui/input";
 import { Button } from "../componets/ui/button";
-import { Search, ChevronLeft, ChevronRight, Filter } from "lucide-react";
+
+import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 const ParticipantsPage = () => {
   const [participants, setParticipants] = useState([]);
@@ -12,9 +14,37 @@ const ParticipantsPage = () => {
 
   // Filter States
   const [search, setSearch] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState(""); // "" means All
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState(null);
+
+  // ✅ FIX: use role values that match your DB reality
+  // (You can tweak this list any time — it just needs to match what backend expects for ?role=)
+  const roleOptions = useMemo(
+    () => [
+      "All",
+      "PI",
+      "Co-PI",
+      "Researcher",
+      "Student",
+      "Artist",
+      "Industry",
+      "Government",
+      "Advisory Board",
+    ],
+    []
+  );
+
+  // Track image failures so we can fall back to initials
+  const [imgFailed, setImgFailed] = useState(() => new Set());
+
+  const markImgFailed = (id) => {
+    setImgFailed((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+  };
 
   // Fetch Data
   const fetchParticipants = async () => {
@@ -22,19 +52,23 @@ const ParticipantsPage = () => {
       setLoading(true);
       setError(null);
 
-      // Build query string
       const params = new URLSearchParams({
-        page: page,
-        limit: 12, // Show 12 cards per page
+        page: String(page),
+        limit: "12",
       });
+
       if (search) params.append("search", search);
-      if (role && role !== "All") params.append("role", role);
+
+      // role state is "" for All, or a real string
+      if (role) params.append("role", role);
 
       const response = await api.get(`/participants?${params.toString()}`);
-      
-      // Handle response structure based on your controller
-      setParticipants(response.data.data || []);
-      setPagination(response.data.pagination);
+
+      setParticipants(response.data?.data || []);
+      setPagination(response.data?.pagination || null);
+
+      // Reset image failures when new data arrives (so back/next pages work cleanly)
+      setImgFailed(new Set());
     } catch (err) {
       console.error("Failed to fetch participants:", err);
       setError("Unable to load participants.");
@@ -43,13 +77,13 @@ const ParticipantsPage = () => {
     }
   };
 
-  // Refetch when page or filters change
+  // Refetch when page or filters change (debounced for search)
   useEffect(() => {
-    // Debounce search to prevent too many API calls
     const timeoutId = setTimeout(() => {
       fetchParticipants();
     }, 300);
     return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, search, role]);
 
   // Helper to generate initials
@@ -66,53 +100,58 @@ const ParticipantsPage = () => {
   return (
     <div className="min-h-screen bg-gray-50/50 py-12">
       <div className="container mx-auto px-4 max-w-7xl">
-        
         {/* Header Section */}
         <div className="text-center mb-12 space-y-4">
           <h1 className="text-4xl font-bold text-blue-950 tracking-tight">
             Meet the Team
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            A diverse network of experts from neuroscience, humanities, engineering, 
-            and ethics working together to accelerate research translation.
+            A diverse network of experts from neuroscience, humanities,
+            engineering, and ethics working together to accelerate research
+            translation.
           </p>
         </div>
 
         {/* Controls Section */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-          
           {/* Search Bar */}
           <div className="relative w-full md:w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input 
-              placeholder="Search by name..." 
+            <Input
+              placeholder="Search by name..."
               className="pl-10 bg-gray-50 border-gray-200 focus-visible:ring-blue-500"
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
-                setPage(1); // Reset to page 1 on search
+                setPage(1);
               }}
             />
           </div>
 
           {/* Filter Buttons */}
           <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
-            {["All", "PI", "Co-PI", "Researcher", "Student"].map((r) => (
-              <button
-                key={r}
-                onClick={() => {
-                  setRole(r);
-                  setPage(1);
-                }}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap
-                  ${(role === r || (r === "All" && role === ""))
-                    ? "bg-blue-600 text-white shadow-md shadow-blue-200"
-                    : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 hover:border-gray-300"
-                  }`}
-              >
-                {r}
-              </button>
-            ))}
+            {roleOptions.map((r) => {
+              const isAll = r === "All";
+              const active = (isAll && role === "") || role === r;
+
+              return (
+                <button
+                  key={r}
+                  onClick={() => {
+                    setRole(isAll ? "" : r);
+                    setPage(1);
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap
+                    ${
+                      active
+                        ? "bg-blue-600 text-white shadow-md shadow-blue-200"
+                        : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 hover:border-gray-300"
+                    }`}
+                >
+                  {r}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -129,7 +168,9 @@ const ParticipantsPage = () => {
         {error && (
           <div className="text-center py-20 bg-white rounded-3xl border border-red-100">
             <p className="text-red-500 mb-2">{error}</p>
-            <Button variant="outline" onClick={fetchParticipants}>Try Again</Button>
+            <Button variant="outline" onClick={fetchParticipants}>
+              Try Again
+            </Button>
           </div>
         )}
 
@@ -138,67 +179,81 @@ const ParticipantsPage = () => {
           <>
             {participants.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {participants.map((person) => (
-                  <Card
-                    key={person.id}
-                    className="group flex flex-col items-center text-center p-6 rounded-3xl border-gray-100 bg-white hover:shadow-xl hover:shadow-blue-900/5 transition-all duration-300 hover:-translate-y-1"
-                  >
-                    {/* Avatar / Initials */}
-                    <div className="relative mb-6">
-                      <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-lg bg-blue-50 flex items-center justify-center">
-                        {person.pfp ? (
-                          <img 
-                            src={person.pfp} 
-                            alt={person.name}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.onerror = null; 
-                              e.target.src = ""; // Trigger fallback if image fails
-                            }}
-                          />
-                        ) : (
-                          <span className="text-2xl font-bold text-blue-600 tracking-wider">
-                            {getInitials(person.name)}
+                {participants.map((person) => {
+                  const showImg = !!person.pfp && !imgFailed.has(person.id);
+
+                  return (
+                    <Card
+                      key={person.id}
+                      className="group flex flex-col items-center text-center p-6 rounded-3xl border-gray-100 bg-white hover:shadow-xl hover:shadow-blue-900/5 transition-all duration-300 hover:-translate-y-1"
+                    >
+                      {/* Avatar / Initials */}
+                      <div className="relative mb-6">
+                        <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-lg bg-blue-50 flex items-center justify-center">
+                          {showImg ? (
+                            <img
+                              src={person.pfp}
+                              alt={person.name}
+                              className="w-full h-full object-cover"
+                              onError={() => markImgFailed(person.id)}
+                            />
+                          ) : (
+                            <span className="text-2xl font-bold text-blue-600 tracking-wider">
+                              {getInitials(person.name)}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Info */}
+                      <div className="space-y-2 w-full">
+                        <h3
+                          className="font-bold text-lg text-gray-900 truncate"
+                          title={person.name}
+                        >
+                          {person.name}
+                        </h3>
+
+                        {person.role && (
+                          <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                            {person.role}
                           </span>
                         )}
-                      </div>
-                    </div>
 
-                    {/* Info */}
-                    <div className="space-y-2 w-full">
-                      <h3 className="font-bold text-lg text-gray-900 truncate" title={person.name}>
-                        {person.name}
-                      </h3>
-                      
-                      {person.role && (
-                        <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
-                          {person.role}
-                        </span>
-                      )}
-
-                      <div className="pt-3 space-y-1 border-t border-gray-50 mt-3">
-                        {person.affiliation && (
-                          <p className="text-sm text-gray-600 font-medium truncate" title={person.affiliation}>
-                            {person.affiliation}
-                          </p>
-                        )}
-                        {person.specialty && (
-                          <p className="text-xs text-gray-500 truncate" title={person.specialty}>
-                            {person.specialty}
-                          </p>
-                        )}
+                        <div className="pt-3 space-y-1 border-t border-gray-50 mt-3">
+                          {person.affiliation && (
+                            <p
+                              className="text-sm text-gray-600 font-medium truncate"
+                              title={person.affiliation}
+                            >
+                              {person.affiliation}
+                            </p>
+                          )}
+                          {person.specialty && (
+                            <p
+                              className="text-xs text-gray-500 truncate"
+                              title={person.specialty}
+                            >
+                              {person.specialty}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  );
+                })}
               </div>
             ) : (
               <div className="text-center py-20">
                 <div className="inline-flex p-4 rounded-full bg-gray-50 mb-4">
                   <Search className="h-8 w-8 text-gray-400" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-900">No participants found</h3>
-                <p className="text-gray-500 mt-1">Try adjusting your search or filters</p>
+                <h3 className="text-lg font-medium text-gray-900">
+                  No participants found
+                </h3>
+                <p className="text-gray-500 mt-1">
+                  Try adjusting your search or filters
+                </p>
               </div>
             )}
 
@@ -214,7 +269,7 @@ const ParticipantsPage = () => {
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
-                
+
                 <span className="text-sm font-medium text-gray-600">
                   Page {page} of {Math.ceil(pagination.count / pagination.limit)}
                 </span>

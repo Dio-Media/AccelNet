@@ -13,10 +13,6 @@ export async function getAllOrganizations(req, res) {
           org_id,
           org_name,
           org_type,
-          country,
-          website_url,
-          logo_url,
-          org_description
        FROM organizations
        ORDER BY org_name ASC
        LIMIT ${limit} OFFSET ${offset}`
