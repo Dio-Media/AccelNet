@@ -1,25 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import api from "../lib/api";
 import { Card } from "../componets/ui/card";
-import { Globe } from "lucide-react";
+import { Input } from "../componets/ui/input";
+import { Badge } from "../componets/ui/badge";
 
 const OrganizationsPage = () => {
   const [orgs, setOrgs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [type, setType] = useState("");
 
   useEffect(() => {
+    let cancelled = false;
+
     const fetchOrgs = async () => {
+      setLoading(true);
       try {
-        const response = await api.get("/organizations");
-        setOrgs(response.data.data || []);
+        const response = await api.get("/organizations", {
+          params: {
+            search: search || undefined,
+            org_type: type || undefined,
+            page: 1,
+            limit: 200,
+          },
+        });
+        if (!cancelled) setOrgs(response.data?.data || []);
       } catch (error) {
         console.error("Failed to fetch organizations", error);
+        if (!cancelled) setOrgs([]);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
-    fetchOrgs();
-  }, []);
+
+    // small debounce so typing doesn't spam
+    const t = setTimeout(fetchOrgs, 250);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [search, type]);
+
+  const typeOptions = useMemo(() => {
+    const set = new Set(orgs.map((o) => o.org_type).filter(Boolean));
+    return Array.from(set).sort();
+  }, [orgs]);
 
   if (loading) return <div className="text-center py-20">Loading partners...</div>;
 
@@ -29,35 +54,65 @@ const OrganizationsPage = () => {
         <h1 className="text-4xl font-bold text-blue-950 mb-8 text-center">
           Partner Organizations
         </h1>
+
+        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="w-full sm:max-w-md">
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search organizations…"
+              className="bg-white"
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setType("")}
+              className={`px-3 py-1.5 rounded-md text-sm border bg-white ${
+                type === "" ? "border-blue-600 text-blue-700" : "border-gray-200 text-gray-700"
+              }`}
+            >
+              All
+            </button>
+
+            {typeOptions.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setType(t)}
+                className={`px-3 py-1.5 rounded-md text-sm border bg-white ${
+                  type === t ? "border-blue-600 text-blue-700" : "border-gray-200 text-gray-700"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {orgs.map((org) => (
-            <Card key={org.org_id} className="p-6 hover:shadow-lg transition-all bg-white flex flex-col items-center text-center">
-              <div className="w-24 h-24 mb-4 flex items-center justify-center bg-gray-50 rounded-full border border-gray-100 p-4">
-                {org.logo_url ? (
-                  <img src={org.logo_url} alt={org.org_name} className="max-w-full max-h-full object-contain" />
-                ) : (
-                  <Globe className="w-10 h-10 text-blue-300" />
-                )}
+            <Card
+              key={org.org_id}
+              className="p-6 hover:shadow-lg transition-all bg-white flex flex-col"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-xl font-bold text-gray-900 leading-snug">
+                  {org.org_name}
+                </h3>
+                <Badge variant="secondary" className="shrink-0">
+                  {org.org_type || "unknown"}
+                </Badge>
               </div>
-              
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{org.org_name}</h3>
-              <p className="text-sm text-blue-600 font-medium mb-3">{org.org_type} • {org.country}</p>
-              
-              <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                {org.org_description}
+
+              <p className="text-sm text-gray-600 mt-3">
+                {Number(org.participant_count || 0)} participant{Number(org.participant_count || 0) === 1 ? "" : "s"}
               </p>
-              
-              {org.website_url && (
-                <a 
-                  href={org.website_url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="mt-auto text-sm font-semibold text-blue-600 hover:text-blue-800 hover:underline"
-                >
-                  Visit Website
-                </a>
-              )}
+
+              <div className="mt-4 text-sm text-gray-500">
+                <span className="font-medium text-gray-700">Org ID:</span> {org.org_id}
+              </div>
             </Card>
           ))}
         </div>
