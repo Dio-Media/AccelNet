@@ -65,8 +65,8 @@ const Navbar = () => {
     { path: "/grants", label: "Grants" },
     { path: "/news", label: "News" },
     { path: "/events", label: "Events" },
-    { path: "/grants", lable: "Grants"},
-    { path: "https://brainonarts.wordpress.com/meeting-of-minds/", label: "Art & Science" },
+    { path: "/grants", label: "Grants"},
+    { path: "https://brainonarts.wordpress.com/", label: "Art & Science" },
   ];
 
   const renderDropdown = (link) => (
