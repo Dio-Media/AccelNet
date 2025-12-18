@@ -116,18 +116,26 @@ const Navbar = () => {
   );
 
   return (
-    <header className="bg-white/80 backdrop-blur-sm shadow-md sticky top-0 z-50">
+    <header className="sticky top-0 z-50 bg-white shadow-md">
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           
           {/* Logo and Brand */}
-          <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+          <Link to="/" className="flex items-center gap-4 hover:opacity-90 transition-opacity">
             <img 
               src="/anlogo-removebg-preview.png"
-              alt="AccelNet Logo"
-              className="h-10 w-10 md:h-12 md:w-12"
+              alt="/anlogo-removebg-preview.png"
+              className="h-12 w-auto md:h-14"
             />
-            <h1 className="text-xl md:text-2xl font-extralight text-gray-800"> AccelNet</h1>
+            <div className="leading-tight">
+              <div className="font-extrabold uppercase tracking-tight text-gray-800 text-lg md:text-2xl">
+                <div>MOVEMENT, MUSIC</div>
+                <div>AND BRAIN HEALTH</div>
+              </div>
+              <div className="mt-1 text-gray-800 text-base md:text-lg tracking-[0.35em]">
+                AccelNet
+              </div>
+            </div>
           </Link>
           
           {/* Desktop Navigation */}
