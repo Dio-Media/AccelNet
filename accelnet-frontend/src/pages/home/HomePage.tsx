@@ -14,9 +14,9 @@ export default function HomePage() {
       <ResearchHero />
       <ResearchFindings />
       <DataVisualization />
-      <ResearchMethodology />
       <Publications />
       <ResearchTeam />
+      <ResearchMethodology />
     </>
   );
 }

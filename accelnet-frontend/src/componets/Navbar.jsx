@@ -65,7 +65,6 @@ const Navbar = () => {
     { path: "/grants", label: "Grants" },
     { path: "/news", label: "News" },
     { path: "/events", label: "Events" },
-    { path: "/grants", label: "Grants"},
     { path: "https://brainonarts.wordpress.com/", label: "Art & Science" },
   ];
 
