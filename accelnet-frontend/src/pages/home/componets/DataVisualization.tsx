@@ -2,7 +2,7 @@ export function DataVisualization() {
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-6">
-        <h2 className="mb-4 text-center">Data Visualization</h2>
+        <h2 className="text-2xl md:text-3xl font-semibold text-center text-gray-900 mb-4">Data Visualization</h2>
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
           The following data shows how the Networks of Networks are connected
         </p>
