@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // Get API URL from environment variable
-const apiUrl = import.meta.env.VITE_API_URL || '/api';
+const apiUrl = import.meta.env.VITE_API_URL || "http://161.153.104.196";
+
 
 // Debug log (you can remove this later)
 console.log('🔗 API Configuration:', {

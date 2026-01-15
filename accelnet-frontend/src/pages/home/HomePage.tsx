@@ -1,7 +1,7 @@
 import { ResearchHero } from './componets/ResearchHero';
-import { ResearchFindings } from './componets/ResearchFindings';
+import { ResearchFindings } from './componets/Mapping';
 import { DataVisualization } from './componets/DataVisualization';
-import { ResearchMethodology } from './componets/ResearchMethodology';
+import { ResearchMethodology } from './componets/JoinUs';
 import { Publications } from './componets/Publications';
 import  ResearchTeam  from './componets/ResearchTeam';
 
