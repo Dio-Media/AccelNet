@@ -10,6 +10,7 @@ import Layout from './componets/Layout.jsx';
 import Participants from './pages/ParticipantsPage.jsx'
 import Grants from './pages/GrantPage.jsx'
 import Organizations from './pages/OrganizationsPage.jsx'
+import { Analytics } from "@vercel/analytics/next"
 
 
 
