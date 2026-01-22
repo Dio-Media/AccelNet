@@ -8,7 +8,7 @@ type Slide = {
   caption?: string;
 };
 
-export function OrgHero() {
+export function Publications() {
   const images: Slide[] = useMemo(
     () => [
       // TODO: replace with real publication images
