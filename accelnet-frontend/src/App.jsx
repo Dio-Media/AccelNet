@@ -10,7 +10,6 @@ import Layout from './componets/Layout.jsx';
 import Participants from './pages/ParticipantsPage.jsx'
 import Grants from './pages/GrantPage.jsx'
 import Organizations from './pages/OrganizationsPage.jsx'
-import { Analytics } from "@vercel/analytics/react"
 
 
 
@@ -29,7 +28,6 @@ function App() {
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
-      <Analytics />
     </Routes>
   )
 }
