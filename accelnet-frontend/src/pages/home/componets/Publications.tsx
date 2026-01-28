@@ -5,16 +5,17 @@ type Slide = {
   id: number;
   src: string;
   alt?: string;
-  caption?: string;
 };
 
 export function Publications() {
   const images: Slide[] = useMemo(
     () => [
       // TODO: replace with real publication images
-      { id: 1, src: "/herobg1.jpg", caption: "Caption Text" },
-      { id: 2, src: "/herobg3.jpg", caption: "Caption Two" },
-      { id: 3, src: "/herobg2.jpg", caption: "Caption Three" },
+      { id: 1, src: "/ebrains_summit.jpg" },
+      { id: 2, src: "/Loving_acting.jpg"  },
+      { id: 3, src: "/MeetingofMinds2.jpg"},
+      { id: 4, src: "/mariachi_uh.jpg"},
+      { id: 5, src: "/herobg2.jpg"},
     ],
     []
   );
@@ -60,9 +61,17 @@ export function Publications() {
   }
 
   return (
-    <section className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl shadow">
+    <section className="py-16">
+      <div className="container mx-auto px-6">
+        <h2 className="text-2xl md:text-3xl font-semibold text-center text-gray-900 mb-4">
+          Featured Collaborations
+        </h2>
+        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          We collaborate with minds all over the world, to spread new ideas and form connections across the global. With the use of dancing, music, and acting, we fashion research to help the mind build connections in real time.
+        </p>
+      </div>
       {/* Slides */}
-      <div className="relative h-[260px] sm:h-[340px] md:h-[440px] bg-black">
+      <div className="relative mx-auto h-[260px] sm:h-[340px] md:h-[510px] bg-black max-w-5xl overflow-hidden rounded-2xl shadow">
         {images.map((img, idx) => {
           const isActive = idx === currentIndex;
           return (
@@ -82,12 +91,6 @@ export function Publications() {
                 alt={img.alt ?? `Slide ${idx + 1}`}
                 className="h-full w-full object-cover"
               />
-
-              {img.caption && (
-                <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-4 py-3 text-sm text-white">
-                  {img.caption}
-                </div>
-              )}
             </div>
           );
         })}

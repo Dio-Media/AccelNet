@@ -70,7 +70,7 @@ export function ResearchFindings() {
   }, [open]);
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16">
       <div className="container mx-auto px-6">
         <h2 className="text-2xl md:text-3xl font-semibold text-center text-gray-900 mb-4">
           Network Visualizations

@@ -3,7 +3,7 @@ import { ImageWithFallback } from "../../../componets/ImageWithFallback";
 
 export function ResearchHero() {
   const images = useMemo(
-    () => ["/herobg4.jpg", "/herobg1.jpg", "/herobg2.jpg", "/herobg3.jpg"],
+    () => ["/herobg4.jpg", "/SN.gif", "/herobg2.jpg", "/herobg3.jpg"],
     []
   );
 
