@@ -54,7 +54,6 @@ const Navbar = () => {
         { path: "/steering-committee", label: "Steering Committee" },
         { path: "/advisory-board", label: "Advisory Board" },
         { path: "/student-network", label: "AccelNet Student Network" },
-        { path: "/interactive-map", label: "Interactive Map" },
         { 
           path: "/participants", 
           label: "Participants",
@@ -122,6 +121,12 @@ const Navbar = () => {
           
           {/* Logo and Brand */}
           <Link to="/" className="flex items-center gap-4 hover:opacity-90 transition-opacity">
+            <img
+            src="/NSFLogo.png"
+            alt="NSF Logo"
+            className="h-12 w-auto md:h-14"
+            />
+            <p>|</p>
             <img 
               src="/anlogo-removebg-preview.png"
               alt="/anlogo-removebg-preview.png"
@@ -134,7 +139,9 @@ const Navbar = () => {
               </div>
               <div className="mt-1 text-gray-800 text-base md:text-lg tracking-[0.35em]">
                 AccelNet
+                
               </div>
+              <div>Award #2412731</div>
             </div>
           </Link>
           
