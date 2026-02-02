@@ -26,8 +26,6 @@ function App() {
         <Route path="/grants" element={<Grants />}/>
         <Route path="/interactive-map" element={<Organizations />}/>
       </Route>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignUpPage />} />
     </Routes>
   )
 }

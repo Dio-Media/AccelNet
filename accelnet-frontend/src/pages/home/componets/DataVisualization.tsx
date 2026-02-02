@@ -1,6 +1,6 @@
 export function DataVisualization() {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-10 md:py-14 bg-gray-50">
       <div className="container mx-auto px-6">
         <h2 className="text-2xl md:text-3xl font-semibold text-center text-gray-900 mb-4">Data Visualization</h2>
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
