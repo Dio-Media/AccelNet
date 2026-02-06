@@ -25,7 +25,7 @@ export function Publications() {
       id: 2,
       title: "Community Workshops",
       description: "Bringing researchers, artists, and learners together.",
-      src: "/collab-performance-2.jpg",
+      src: "/CW.jpg",
     },
     {
       id: 3,
