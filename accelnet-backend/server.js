@@ -116,6 +116,7 @@ app.use((req, res) => {
 
 // ==================== START SERVER ====================
 app.listen(ENV_VARS.PORT, () => {
+    console.log('DB:', process.env.DB_NAME);
     console.log(`\n AccelNet API Server Running`);
     console.log(`   URL: http://localhost:${ENV_VARS.PORT}`);
     console.log(`   Environment: ${ENV_VARS.NODE_ENV}`);

@@ -10,7 +10,7 @@ import Layout from './componets/Layout.jsx';
 import Participants from './pages/ParticipantsPage.jsx'
 import Grants from './pages/GrantPage.jsx'
 import Organizations from './pages/OrganizationsPage.jsx'
-
+import ComingSoon from './componets/ComingSoon.jsx';
 
 
 function App() {
@@ -24,7 +24,10 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/participants" element={<Participants />} />
         <Route path="/grants" element={<Grants />}/>
-        <Route path="/interactive-map" element={<Organizations />}/>
+        <Route path="/forum" element={<ComingSoon />} />
+        <Route path="/advisory-board" element={<ComingSoon />} />
+        <Route path="/steering-committee" element={<ComingSoon />} />
+        <Route path="/student-network" element={<ComingSoon />} />
       </Route>
     </Routes>
   )

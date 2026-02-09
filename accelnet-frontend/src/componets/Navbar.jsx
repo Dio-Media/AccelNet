@@ -1,42 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Search } from "lucide-react";
-import { useAuthStore } from "../store/useAuthStore"
-import { useNavigate } from "react-router-dom";
-
-function AuthActions() {
-  const { user, logout, isLoggingOut } = useAuthStore();
-  const navigate = useNavigate();
-
-  if (!user) {
-    return (
-      <div className="hidden md:flex items-center space-x-4">
-        <Link to="/login" className="text-blue-800 hover:text-blue-600 font-medium transition-colors">
-          Login
-        </Link>
-        <Link to="/signup" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 shadow hover:shadow-lg">
-          Sign Up
-        </Link>
-      </div>
-    );
-  }
-
-  return (
-    <div className="hidden md:flex items-center space-x-4">
-      <span className="text-sm text-gray-700">
-        {user.first_name || user.name || user.email}
-      </span>
-      <button
-        onClick={async () => { await logout(); navigate("/"); }}
-        disabled={isLoggingOut}
-        className="text-blue-800 hover:text-blue-600 font-medium transition-colors"
-      >
-        {isLoggingOut ? "Logging out…" : "Logout"}
-      </button>
-    </div>
-  );
-}
-
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -65,6 +29,7 @@ const Navbar = () => {
     { path: "/news", label: "News" },
     { path: "/events", label: "Events" },
     { path: "https://brainonarts.wordpress.com/", label: "Art & Science" },
+    { path: "/forum", label: "Forum" },
   ];
 
   const renderDropdown = (link) => (
@@ -163,18 +128,7 @@ const Navbar = () => {
           </div>
 
           {/* Right Side Actions */}
-          <div className="flex items-center space-x-4">
-            <Link 
-              to="/search" 
-              className="text-blue-800 hover:text-blue-600 transition-colors"
-              aria-label="Search"
-            >
-              <Search className="size-6" />
-            </Link>
-
-            {/* Auth Links */}
-            <AuthActions />
-            
+          <div className="flex items-center space-x-4">            
             {/* Mobile Menu Toggle */}
             <button 
               className="md:hidden p-1 text-blue-800 hover:text-blue-600 transition-colors"
@@ -243,23 +197,7 @@ const Navbar = () => {
                 )
               ))}
               
-              {/* Mobile Auth Links */}
-              <div className="border-t border-gray-200 pt-4 space-y-3">
-                <Link 
-                  to="/login" 
-                  className="block py-2 text-blue-800 hover:text-blue-600 font-medium transition-colors"
-                  onClick={closeMobileMenu}
-                >
-                  Login
-                </Link>
-                <Link 
-                  to="/signup" 
-                  className="block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg text-center transition-colors"
-                  onClick={closeMobileMenu}
-                >
-                  Sign Up
-                </Link>
-              </div>
+              
             </div>
           </div>
         )}
