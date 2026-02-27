@@ -1,3 +1,6 @@
+import pool from '../config/db.js';
+
+
 export const getAllParticipants = async (req, res) => {
   try {
     const [rows] = await pool.query(`
