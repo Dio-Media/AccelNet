@@ -1,16 +1,21 @@
-// routes/participants.route.js
+// routes/participants.routes.js
 import express from 'express';
 import {
-  getHomepageParticipants,
   getAllParticipants,
+  getParticipantById
 } from '../controllers/participants.controller.js';
 
 const router = express.Router();
 
-// GET /api/participants
-router.get('/', getAllParticipants);
+// =====================
+// PUBLIC ROUTES
+// =====================
 
-// GET /api/participants/homepage
-router.get('/homepage', getHomepageParticipants);
+router.get('/', getAllParticipants);
+router.get('/:id', getParticipantById);
+
+// =====================
+// ADMIN ROUTES (DISABLED FOR NOW)
+// =====================
 
 export default router;
