@@ -69,7 +69,7 @@ export async function getEventById(req, res) {
         const { id } = req.params;
 
         const [events] = await pool.execute(
-            `SELECT * FROM anevents WHERE event_id = ?`,
+            `SELECT * FROM anevents WHERE event_id = $1`,
             [id]
         );
 
@@ -100,7 +100,7 @@ export async function registerForEvent(req, res) {
 
         // Check if already registered
         const [existing] = await pool.execute(
-            'SELECT * FROM event_registration WHERE event_id = ? AND user_id = ?',
+            'SELECT * FROM event_registration WHERE event_id = $1 AND user_id = $2',
             [id, userId]
         );
 
@@ -137,7 +137,7 @@ export async function unregisterFromEvent(req, res) {
         const userId = req.user.userId;
 
         const [result] = await pool.execute(
-            'DELETE FROM event_registration WHERE event_id = ? AND user_id = ?',
+            'DELETE FROM event_registration WHERE event_id = $1 AND user_id = $2',
             [id, userId]
         );
 
@@ -169,7 +169,7 @@ export async function getUserEvents(req, res) {
             `SELECT e.*, er.registration_date, er.attendance_status
              FROM anevents e
              INNER JOIN event_registration er ON e.event_id = er.event_id
-             WHERE er.user_id = ?
+             WHERE er.user_id = $1
              ORDER BY e.start_datetime DESC`,
             [userId]
         );

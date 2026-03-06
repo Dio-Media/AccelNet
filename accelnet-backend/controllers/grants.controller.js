@@ -52,7 +52,7 @@ export async function getGrantById(req, res) {
           funding_amount,
           application_deadline
        FROM angrants
-       WHERE grant_id = ?`,
+       WHERE grant_id = $1`,
       [id]
     );
 
