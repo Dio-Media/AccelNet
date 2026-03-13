@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { ImageWithFallback } from "../../../componets/ImageWithFallback";
 
+const INTERVAL_TIME_MS = 6 * 1000;
+
 export function ResearchHero() {
   const images = useMemo(
     () => ["/herobg4.jpg", "/SN.gif", "/herobg2.jpg", "/herobg3.jpg"],
@@ -9,7 +11,6 @@ export function ResearchHero() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const INTERVAL_TIME_MS = 6 * 1000;
 
   const goTo = useCallback(
     (index) => {
