@@ -1,16 +1,7 @@
 import { Building2, Info } from "lucide-react";
-import { ImageWithFallback } from "../../../componets/ImageWithFallback";
+import { ImageWithFallback } from "../../../componets/ImageWithFallback.jsx";
 
-type MapMarker = {
-  label: string;
-  left: string; // percent (e.g., "32%")
-  top: string; // percent (e.g., "52%")
-};
-
-// Marker positions are percentages relative to the map container,
-// so they scale automatically on any screen size + browser zoom.
-const markers: MapMarker[] = [
-  // US cluster placeholders (we’ll set exact sites once you list the colleges)
+const markers = [
   { label: "University site", left: "24%", top: "56%" },
   { label: "University site", left: "22%", top: "50%" },
   { label: "University site", left: "28%", top: "52%" },

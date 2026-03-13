@@ -9,11 +9,10 @@ export function ResearchHero() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Auto-advance settings
-  const INTERVAL_TIME_MS = 6 * 1000; // 6 seconds
+  const INTERVAL_TIME_MS = 6 * 1000;
 
   const goTo = useCallback(
-    (index: number) => {
+    (index) => {
       const safeIndex = ((index % images.length) + images.length) % images.length;
       setCurrentIndex(safeIndex);
     },
@@ -28,7 +27,6 @@ export function ResearchHero() {
     setCurrentIndex((i) => (i - 1 + images.length) % images.length);
   }, [images.length]);
 
-  // Auto-advance with reset after manual changes
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((i) => (i + 1) % images.length);
@@ -39,7 +37,6 @@ export function ResearchHero() {
 
   return (
     <section className="relative overflow-hidden bg-black h-96 md:h-[500px] lg:h-[600px]">
-      {/* 1) Background Image Stack (cross-fade) */}
       {images.map((src, index) => (
         <div
           key={src}
@@ -56,7 +53,6 @@ export function ResearchHero() {
         </div>
       ))}
 
-      {/* 2) Overlay + Content */}
       <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/80 to-black/40">
         <div className="container mx-auto flex h-full items-center px-6">
           <div className="max-w-2xl">
@@ -80,11 +76,9 @@ export function ResearchHero() {
         </div>
       </div>
 
-      {/* 3) Manual Controls */}
       <div className="absolute inset-x-0 bottom-6 z-20">
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between">
-            {/* Prev / Next */}
             <div className="flex gap-2">
               <button
                 type="button"
@@ -104,7 +98,6 @@ export function ResearchHero() {
               </button>
             </div>
 
-            {/* Dots */}
             <div className="flex items-center gap-2">
               {images.map((_, i) => (
                 <button

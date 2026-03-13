@@ -1,4 +1,4 @@
-import { useEffect, useId, useState, type FormEvent } from "react";
+import { useEffect, useId, useState } from "react";
 
 export function ResearchMethodology() {
   const [open, setOpen] = useState(false);
@@ -7,11 +7,10 @@ export function ResearchMethodology() {
   const formUrl =
     "https://forms.cloud.microsoft/pages/responsepage.aspx?id=vboLF_CikEytSw6PDwxCWZXdNLLzg6xEqEIhtxz_Bu9URFE5SVRUTVJaSUk2MUNLUEtRRTRMMU45WS4u&route=shorturl";
 
-  // Close on ESC
   useEffect(() => {
     if (!open) return;
 
-    const onKeyDown = (e: KeyboardEvent) => {
+    const onKeyDown = (e) => {
       if (e.key === "Escape") setOpen(false);
     };
 
@@ -19,10 +18,8 @@ export function ResearchMethodology() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  function onSubmit(e) {
     e.preventDefault();
-    // Optional: do something with local form fields if you add them later
-    // For now we just close.
     setOpen(false);
   }
 
@@ -56,8 +53,7 @@ export function ResearchMethodology() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="inline-flex items-center justify-center rounded-md px-5 py-3 font-semibold text-white shadow-sm transition
-                         bg-[#00A79D] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00A79D]"
+              className="inline-flex items-center justify-center rounded-md px-5 py-3 font-semibold text-white shadow-sm transition bg-[#00A79D] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00A79D]"
             >
               Register Here
             </button>
@@ -77,27 +73,25 @@ export function ResearchMethodology() {
         </div>
       </div>
 
-      {/* Modal */}
       {open && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center px-4 py-8 bg-black/70"
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
-          onClick={() => setOpen(false)} // click backdrop closes
+          onClick={() => setOpen(false)}
         >
           <div
             className="relative w-full max-w-3xl rounded-xl bg-white shadow-xl"
-            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
             <div className="flex items-start justify-between border-b px-6 py-4">
               <div>
                 <h3 id={titleId} className="text-lg font-semibold text-gray-900">
                   Register
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Fill out the form below. If the embed doesn’t load, use “Open form in new tab”.
+                  Fill out the form below. If the embed doesn't load, use "Open form in new tab".
                 </p>
               </div>
 
@@ -111,7 +105,6 @@ export function ResearchMethodology() {
               </button>
             </div>
 
-            {/* Body */}
             <div className="px-6 py-5">
               <div className="rounded-lg border overflow-hidden">
                 <iframe
@@ -122,7 +115,6 @@ export function ResearchMethodology() {
               </div>
             </div>
 
-            {/* Footer */}
             <form
               onSubmit={onSubmit}
               className="flex flex-col-reverse gap-3 border-t px-6 py-4 sm:flex-row sm:items-center sm:justify-end"
@@ -130,8 +122,7 @@ export function ResearchMethodology() {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="inline-flex items-center justify-center rounded-md px-4 py-2 font-semibold text-gray-900
-                           border border-gray-300 hover:bg-gray-50"
+                className="inline-flex items-center justify-center rounded-md px-4 py-2 font-semibold text-gray-900 border border-gray-300 hover:bg-gray-50"
               >
                 Cancel
               </button>
@@ -140,8 +131,7 @@ export function ResearchMethodology() {
                 href={formUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-md px-4 py-2 font-semibold text-white shadow-sm transition
-                           bg-[#00A79D] hover:opacity-90"
+                className="inline-flex items-center justify-center rounded-md px-4 py-2 font-semibold text-white shadow-sm transition bg-[#00A79D] hover:opacity-90"
               >
                 Open form in new tab
               </a>

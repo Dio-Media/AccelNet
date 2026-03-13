@@ -2,38 +2,26 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Card } from "../../../componets/ui/card";
 import api from "../../../lib/api";
 
-type Participant = {
-  id: number;
-  name: string;
-  role: string | null;
-  affiliation: string | null;
-  specialty: string | null;
-  academicRank?: string | null;
-  orcid?: string | null;
-  googleScholarId?: string | null;
-  pfp?: string | null; // backend sends pfp (base64 data url)
-};
+function getInitials(name) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
 
-type FeaturedParticipantsProps = {
-  title?: string;
-  description?: string;
-  limit?: number;
-  /** By default, this section is plain (no gray band). */
-  showBackground?: boolean;
-};
-
-const FeaturedParticipants: React.FC<FeaturedParticipantsProps> = ({
+const FeaturedParticipants = ({
   title = "Featured participants",
-  description =
-    "A few of the key people helping drive AccelNet’s collaborations across neuroscience, engineering, and the arts.",
+  description = "A few of the key people helping drive AccelNet's collaborations across neuroscience, engineering, and the arts.",
   limit = 6,
   showBackground = false,
 }) => {
-  const [team, setTeam] = useState<Participant[]>([]);
+  const [team, setTeam] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const [imgFailed, setImgFailed] = useState<Set<number>>(new Set());
+  const [error, setError] = useState(null);
+  const [imgFailed, setImgFailed] = useState(new Set());
 
   const paramsString = useMemo(() => {
     const params = new URLSearchParams({ limit: String(limit) });
@@ -93,7 +81,7 @@ const FeaturedParticipants: React.FC<FeaturedParticipantsProps> = ({
                   <div className="w-24 h-24 rounded-full mb-4 flex items-center justify-center bg-blue-50 overflow-hidden">
                     {showImg ? (
                       <img
-                        src={person.pfp!}
+                        src={person.pfp}
                         alt={person.name}
                         className="w-full h-full object-cover"
                         onError={() =>
@@ -131,15 +119,5 @@ const FeaturedParticipants: React.FC<FeaturedParticipantsProps> = ({
     </section>
   );
 };
-
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-}
 
 export default FeaturedParticipants;
