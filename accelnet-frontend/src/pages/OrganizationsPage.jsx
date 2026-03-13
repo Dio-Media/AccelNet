@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import api from "../lib/api";
-import { Card } from "../componets/ui/card";
-import { Input } from "../componets/ui/input";
-import { Badge } from "../componets/ui/badge";
+import { Card } from "../componets/ui/Card.jsx";
+import { Input } from "../componets/ui/Input.jsx";
 
 const OrganizationsPage = () => {
   const [orgs, setOrgs] = useState([]);

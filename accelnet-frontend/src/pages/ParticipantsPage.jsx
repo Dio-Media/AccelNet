@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import api from "../lib/api"; // Using your configured API client
 
-import { Card } from "../componets/ui/card";
-import { Input } from "../componets/ui/input";
-import { Button } from "../componets/ui/button";
+import { Card } from "../componets/ui/Card.jsx";
+import { Input } from "../componets/ui/Input.jsx";
+import { Button } from "../componets/ui/Button.jsx";
 
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 

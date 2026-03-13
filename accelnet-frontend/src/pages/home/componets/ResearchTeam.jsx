@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Card } from "../../../componets/ui/card";
+import { Card } from "../../../componets/ui/Card.jsx";
 import api from "../../../lib/api";
 
 function getInitials(name) {

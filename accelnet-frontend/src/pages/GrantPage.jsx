@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../lib/api";
-import { Card } from "../componets/ui/card";
-import { Badge } from "../componets/ui/badge";
+import { Card } from "../componets/ui/Card.jsx"
 import { Calendar, DollarSign } from "lucide-react";
 
 const GrantsPage = () => {
