@@ -8,7 +8,7 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import { getSupabase } from "./lib/supabase";
+import { getSupabase } from "./lib/supabase.js";
 
 export default {
   async fetch(request, env) {
@@ -17,11 +17,20 @@ export default {
 
     if (url.pathname === "/api/participants") {
 
+
       const supabase = getSupabase(env);
 
       const { data, error } = await supabase
         .from("participants")
-        .select("*");
+        .select(`
+          id,
+          first_name,
+          last_name,
+          title,
+          department,
+          institutions(inst_name)
+          `)
+          .order("last_name");
 
       if (error) {
         return new Response(
@@ -29,11 +38,17 @@ export default {
           { status: 500 }
         );
       }
+      const formattedData = data.map((participant) => ({
+        id: participant.id,
+        name: `${participant.first_name} ${participant.last_name}`,
+        title: participant.title,
+        department: participant.department,
+        institution: participant.institutions ?.inst_name ?? null
+      }));
+      return new Response(JSON.stringify(formattedData),{
+        headers: {"Content-Type": "application/json"}
+      });
 
-      return new Response(
-        JSON.stringify(data),
-        { headers: { "Content-Type": "application/json" } }
-      );
     }
 
     return new Response("Not Found", { status: 404 });
