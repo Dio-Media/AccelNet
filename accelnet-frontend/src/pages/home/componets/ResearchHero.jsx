@@ -4,118 +4,115 @@ import { ImageWithFallback } from "../../../componets/ImageWithFallback";
 const INTERVAL_TIME_MS = 6 * 1000;
 
 export function ResearchHero() {
-  const images = useMemo(
-    () => ["/herobg4.jpg", "/SN.gif", "/herobg2.jpg", "/herobg3.jpg"],
-    []
-  );
+  const slides = useMemo(() => [
+    {
+      src: "/Florence_italy.jpg",
+      alt: "EBrains Summer School",
+      caption: "EBrains Summer School",
+      info: "Human Data Management, Modelling and AI • Digital Brain Twins • Data • Large Brain Models • Brain-Computer Interfaces • AI & Synthetic Data & EBRAINS Infrastructure • Hands-on project-based workshop. Learning Center Morgagni, University of Florence",
+      registerLink: "https://ebrains.eu/news-and-events/events/2026/ebrains-summer-school-on-human-data-management-and-modellingai",
+    },
+    {
+      src: "/Niccolini_Theater.jpg",
+      alt: "AccelNet EBrains",
+      caption: "AccelNet EBrains",
+      info: "Infrastructure, AI & Human Impact Keynote: Rinpoche • “Meditation & Brain Health” • Respondant - Philippe Vernier(EBRAINS)",
+      registerLink: "https://ebrains.eu/news-and-events/events/2026/ebrains-accelnet-joint-day",
+    },
+    {
+      src: "/florence_italy_2.jpg",
+      alt: "AccelNet Summit",
+      caption: "AccelNet Summit",
+      info: "More Information Coming Soon",
+      registerLink: null,
+    },
+  ], []);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-
-  const goTo = useCallback(
-    (index) => {
-      const safeIndex = ((index % images.length) + images.length) % images.length;
-      setCurrentIndex(safeIndex);
-    },
-    [images.length]
-  );
-
   const next = useCallback(() => {
-    setCurrentIndex((i) => (i + 1) % images.length);
-  }, [images.length]);
+    setCurrentIndex((i) => (i + 1) % slides.length);
+  }, [slides.length]);
 
   const prev = useCallback(() => {
-    setCurrentIndex((i) => (i - 1 + images.length) % images.length);
-  }, [images.length]);
+    setCurrentIndex((i) => (i - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+
+  const goTo = useCallback((index) => {
+    setCurrentIndex(((index % slides.length) + slides.length) % slides.length);
+  }, [slides.length]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((i) => (i + 1) % images.length);
-    }, INTERVAL_TIME_MS);
-
+    const timer = setInterval(next, INTERVAL_TIME_MS);
     return () => clearInterval(timer);
-  }, [images.length]);
+  }, [next]);
 
   return (
-    <section className="relative overflow-hidden bg-black h-96 md:h-[500px] lg:h-[600px]">
-      {images.map((src, index) => (
+    <section className="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
+
+      {/* Slides */}
+      {slides.map((slide, index) => (
         <div
-          key={src}
+          key={slide.src}
           className={`absolute inset-0 transition-opacity duration-[2000ms] ease-in-out ${
-            index === currentIndex ? "opacity-100" : "opacity-0"
-          }`}
+  index === currentIndex ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+}`}
           aria-hidden={index !== currentIndex}
         >
           <ImageWithFallback
-            src={src}
-            alt={`Research background ${index + 1}`}
-            className="h-full w-full object-cover"
+            src={slide.src}
+            alt={slide.alt}
+            className="w-full h-auto object-cover"
           />
+
+          {/* Caption — always shown */}
+          <div className="absolute top-1/2 left-2 text-white text-lg font-semibold bg-black/50 px-4 py-1 rounded-full">
+            {slide.caption}
+          </div>
+
+          {/* Event info + register button — only on slides that have it */}
+          {slide.info && (
+            <div className="absolute bottom-2 left bg-black/50 text-white text-sm text-justify max-w-xl px-10 py-2 rounded-full">
+              <p className="text-justify">{slide.info}</p>
+             {slide.registerLink && (
+              <a
+                href={slide.registerLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-block rounded-full px-4 py-2 font-semibold text-white bg-[#00A79D] hover:opacity-90 transition-opacity">
+                Register Now
+              </a>
+             )}
+            </div>
+          )}
         </div>
       ))}
 
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/80 to-black/40">
-        <div className="container mx-auto flex h-full items-center px-6">
-          <div className="max-w-2xl">
-            <h1 className="mb-4 text-white">Advancing Brain-Inspired Computing</h1>
-            <p className="mb-6 text-white/90">
-              A collaborative network accelerating research in neuroscience, artificial intelligence,
-              and brain-computer interfaces to improve brain health through art and science.
-            </p>
-
-            <div className="flex gap-6 text-white/80">
-              <div>
-                <div className="text-white">50+</div>
-                <div>Researchers across the globe</div>
-              </div>
-              <div className="border-l border-white/30 pl-6">
-                <div className="text-white">35+</div>
-                <div>Skilled professionals</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Prev / Next buttons */}
+      <div className="YOUR NAV CONTAINER STYLES">
+        <button type="button" onClick={prev} aria-label="Previous slide" className="YOUR PREV BUTTON STYLES">
+          ←
+        </button>
+        <button type="button" onClick={next} aria-label="Next slide" className="YOUR NEXT BUTTON STYLES">
+          →
+        </button>
       </div>
 
-      <div className="absolute inset-x-0 bottom-6 z-20">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={prev}
-                className="rounded-full border border-white/25 bg-black/30 px-4 py-2 text-sm text-white hover:bg-black/45"
-                aria-label="Previous background"
-              >
-                ← Prev
-              </button>
-              <button
-                type="button"
-                onClick={next}
-                className="rounded-full border border-white/25 bg-black/30 px-4 py-2 text-sm text-white hover:bg-black/45"
-                aria-label="Next background"
-              >
-                Next →
-              </button>
-            </div>
-
-            <div className="flex items-center gap-2">
-              {images.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => goTo(i)}
-                  className={`h-2.5 w-2.5 rounded-full transition ${
-                    i === currentIndex ? "bg-white" : "bg-white/40 hover:bg-white/65"
-                  }`}
-                  aria-label={`Go to slide ${i + 1}`}
-                  aria-current={i === currentIndex ? "true" : "false"}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+      {/* Dot indicators */}
+      <div className="flex items-center gap-2">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => goTo(i)}
+            className={i === currentIndex ? "YOUR ACTIVE DOT STYLES" : "YOUR INACTIVE DOT STYLES"}
+            aria-label={`Go to slide ${i + 1}`}
+            aria-current={i === currentIndex ? "true" : "false"}
+          />
+        ))}
       </div>
+
     </section>
   );
 }
