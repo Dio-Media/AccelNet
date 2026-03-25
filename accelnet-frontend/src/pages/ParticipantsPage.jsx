@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_WORKER_API_URL || "https://accelnet-worker-api.diogomiranda8091.workers.dev";
+const API_BASE = import.meta.env.VITE_API_URL || "https://accelnet-worker-api.diogomiranda8091.workers.dev";
 
 export default function ParticipantsPage() {
   const [participants, setParticipants] = useState([]);

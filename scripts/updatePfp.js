@@ -1,96 +1,202 @@
 import { createClient } from "@supabase/supabase-js";
+import axios from "axios";
+import sharp from "sharp";
 import dotenv from "dotenv";
 
-// Load environment variables
 dotenv.config();
 
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
-  console.error("Missing Supabase env vars");
-  process.exit(1);
-}
-
-// Initialize Supabase
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
 );
 
-/**
- * Function to extract the profile picture URL from a LinkedIn URL.
- * NOTE: Replace the contents of this function with your API call or scraping logic.
- */
-async function getLinkedInProfilePicture(linkedinUrl) {
+// helper delay
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// clean LinkedIn URLs
+function cleanLinkedInUrl(url) {
+  return url.split("?")[0];
+}
+
+// 🔥 LINKEDIN FETCH
+async function getLinkedInProfilePicture(linkedinUrl, retries = 3) {
+  if (!linkedinUrl || !linkedinUrl.includes("linkedin.com/in")) return null;
+
+  const options = {
+    method: "GET",
+    url: "https://linkedin-api8.p.rapidapi.com/get-profile-data-by-url",
+    params: {
+      url: linkedinUrl,
+    },
+    headers: {
+      "x-rapidapi-key": process.env.RAPIDAPI_KEY,
+      "x-rapidapi-host": "linkedin-api8.p.rapidapi.com",
+    },
+  };
+
   try {
-    const response = await fetch(
-        `https://nubela.co/proxycurl/api/v2/linkedin?url=${encodeURIComponent(linkedinUrl)}&use_cache=if-present`,
-        {
-            headers: {
-                Authorization: `Bearer ${process.env.PROXYCURL_API_KEY}`
-            },
-        }
-    );
-    const data = await response.json();
-    return data.profile_pic_url ?? null; // Return the extracted image URL
+    const response = await axios.request(options);
+
+    const data = response.data?.data;
+
+    const image =
+      data?.profilePicture ||
+      data?.profilePictureDisplayImage?.elements?.[0]?.identifiers?.[0]?.identifier ||
+      null;
+
+    return image;
 
   } catch (error) {
-    console.error(`Failed to extract PFP for ${linkedinUrl}:`, error.message);
+    const status = error.response?.status;
+
+    console.log(`Error ${status} for ${linkedinUrl}`);
+
+    if (status === 429) {
+      const delay = 8000 + Math.random() * 5000;
+      console.log(`429 → waiting ${Math.round(delay)}ms`);
+      await sleep(delay);
+
+      if (retries > 0) {
+        return getLinkedInProfilePicture(linkedinUrl, retries - 1);
+      }
+    }
+
+    if (status === 403) {
+      console.log(`403 BLOCKED → skipping permanently`);
+      return "BLOCKED";
+    }
+
+    if (retries > 0) {
+      const delay = 4000 + Math.random() * 3000;
+      await sleep(delay);
+      return getLinkedInProfilePicture(linkedinUrl, retries - 1);
+    }
+
     return null;
   }
 }
 
-async function main() {
-  console.log("Starting PFP Extraction Script...");
+// 🔥 IMAGE OPTIMIZATION + UPLOAD
+async function uploadImageToSupabase(imageUrl, fileName, id) {
+  try {
+    const response = await axios.get(imageUrl, {
+      responseType: "arraybuffer",
+    });
 
-  // 1. Fetch participants from Supabase
-  // We optimize this by only selecting participants who HAVE a linkedin link 
-  // and currently DO NOT have a pfp in the database.
-  const { data: participants, error: fetchError } = await supabase
+    const optimized = await sharp(response.data)
+      .resize(300, 300, { fit: "cover" })
+      .jpeg({ quality: 80 })
+      .toBuffer();
+
+    const group = Math.floor(id / 100) * 100;
+    const path = `participants/${group}/${fileName}.jpg`;
+
+    const { error } = await supabase.storage
+      .from("pfp")
+      .upload(path, optimized, {
+        contentType: "image/jpeg",
+        upsert: true,
+      });
+
+    if (error) {
+      console.error("Upload error:", error);
+      return null;
+    }
+
+    return supabase.storage.from("pfp").getPublicUrl(path).data.publicUrl;
+
+  } catch (err) {
+    console.error("Upload failed:", err.message);
+    return null;
+  }
+}
+
+// 🔥 MAIN
+async function main() {
+  console.log("Starting SAFE PFP pipeline...");
+
+  const { data: participants, error } = await supabase
     .from("participants")
     .select("id, first_name, last_name, linkedin")
     .not("linkedin", "is", null)
     .neq("linkedin", "")
-    .is("pfp", null); 
+    .is("pfp", null)
+    .or("pfp_attempted.is.null,pfp_attempted.eq.false")
+    .limit(20);
 
-  if (fetchError) {
-    console.error("Failed to fetch participants:", fetchError);
-    process.exit(1);
+  if (error) {
+    console.error(error);
+    return;
   }
 
-  console.log(`Found ${participants.length} participants needing profile pictures.`);
+  for (const p of participants) {
+    const { id, first_name, last_name, linkedin } = p;
 
-  // 2. Loop through the records
-  for (const participant of participants) {
-    const { id, first_name, last_name, linkedin } = participant;
     console.log(`\nProcessing: ${first_name} ${last_name}`);
 
-    // 3. Extract PFP
-    const pfpUrl = await getLinkedInProfilePicture(linkedin);
+    const safeName = `${id}_${first_name}_${last_name}`
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_]/g, "");
 
-    if (pfpUrl) {
-      // 4. Input in the PFP box (Update the database)
-      const { error: updateError } = await supabase
+    const cleanUrl = cleanLinkedInUrl(linkedin);
+
+    const img = await getLinkedInProfilePicture(cleanUrl);
+
+    // 🚨 BLOCKED USER → mark permanently failed
+    if (img === "BLOCKED") {
+      await supabase
         .from("participants")
-        .update({ pfp: pfpUrl })
+        .update({
+          pfp_attempted: true,
+          pfp_failed: true,
+          pfp_last_attempt: new Date(),
+        })
         .eq("id", id);
 
-      if (updateError) {
-        console.error(`❌ DB Update failed for ${first_name}:`, updateError);
-      } else {
-        console.log(`✅ Successfully updated database with PFP for ${first_name}`);
-      }
-    } else {
-      console.log(`⚠️ No PFP found or extraction failed for ${first_name}, skipping...`);
+      console.log("❌ BLOCKED (saved as failed)");
+      continue;
     }
 
-    // Optional: Add a small delay between requests to avoid hitting rate limits 
-    // if you are using an API service.
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // 🚨 NO IMAGE FOUND
+    if (!img) {
+      await supabase
+        .from("participants")
+        .update({
+          pfp_attempted: true,
+          pfp_last_attempt: new Date(),
+        })
+        .eq("id", id);
+
+      console.log("❌ No image");
+      continue;
+    }
+
+    const uploaded = await uploadImageToSupabase(img, safeName, id);
+
+    if (!uploaded) {
+      console.log("❌ Upload failed");
+      continue;
+    }
+
+    // ✅ SUCCESS
+    await supabase
+      .from("participants")
+      .update({
+        pfp: uploaded,
+        pfp_attempted: true,
+        pfp_failed: false,
+        pfp_last_attempt: new Date(),
+      })
+      .eq("id", id);
+
+    console.log("✅ Success");
+
+    const delay = 4000 + Math.random() * 4000;
+    await sleep(delay);
   }
 
-  console.log("\nProcess Complete!");
+  console.log("DONE ✅");
 }
 
-main().catch((err) => {
-  console.error("Script failed:", err);
-  process.exit(1);
-});
+main();
