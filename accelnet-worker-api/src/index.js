@@ -10,8 +10,18 @@
 
 import { getSupabase } from "./lib/supabase.js";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+}
+
 export default {
   async fetch(request, env) {
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders})
+    }
 
     const url = new URL(request.url);
 
@@ -35,7 +45,7 @@ export default {
       if (error) {
         return new Response(
           JSON.stringify(error),
-          { status: 500 }
+          { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
         );
       }
       const formattedData = data.map((participant) => ({
@@ -46,7 +56,7 @@ export default {
         institution: participant.institutions ?.inst_name ?? null
       }));
       return new Response(JSON.stringify(formattedData),{
-        headers: {"Content-Type": "application/json"}
+        headers: {...corsHeaders, "Content-Type": "application/json"}
       });
 
     }

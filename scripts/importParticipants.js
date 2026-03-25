@@ -56,11 +56,16 @@ async function main() {
     const first_name = normalizeName(row.first_name?.trim());
     const last_name = normalizeName(row.last_name?.trim());
     const email = row.email?.trim()?.toLowerCase();
+    const title = row.title?.trim();
+    const academic_rank = row.academic_rank?.trim();
     const institutionName = row.institution
     ?.split(";")[0]
     ?.trim();
     const normalizedInstitution = normalizeInstitutionName(institutionName);
-
+    const department = row.department?.trim();
+    const orcid_no = row.orcid_no?.trim();
+    const google_scholar_id = row.google_scholar_id?.trim();
+    const linkedin = row.linkedin?.trim();
     if (!first_name || !last_name || !email) {
       console.warn("Skipping incomplete row:", row);
       continue;
@@ -72,7 +77,13 @@ async function main() {
       first_name,
       last_name,
       email,
-      institution_id
+      title,
+      academic_rank,
+      institution_id,
+      department,
+      orcid_no,
+      google_scholar_id,
+      linkedin
     };
 
     const { error: insertError } = await supabase
