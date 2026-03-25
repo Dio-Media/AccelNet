@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Get API URL from environment variable
-const apiOrigin = import.meta.env.VITE_API_URL || "/api";
+const apiOrigin = import.meta.env.VITE_WORKER_API_URL || "/api";
 
 const baseURL = apiOrigin.startsWith("http")
   ? `${apiOrigin}/api`
