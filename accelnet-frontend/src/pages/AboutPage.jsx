@@ -1,5 +1,7 @@
 import React, { useEffect, useId, useMemo, useState } from "react";
 import FeaturedParticipants from "./home/componets/ResearchTeam";
+import ParticipantCard from "../componets/ParticipantsCard.jsx";
+import axios from "axios";
 
 const ModalShell = ({ titleId, title, onClose, children }) => {
   // Close on ESC key + lock scroll
@@ -60,6 +62,8 @@ const ModalShell = ({ titleId, title, onClose, children }) => {
 
 export default function About() {
   const [modal, setModal] = useState(null); // 'vision' | 'networks' | 'participants' | null
+  const [participants, setParticipants] = useState([]);
+  const [loadingParticipants, setLoadingParticipants] = useState(false);
   const titleId = useId();
 
   const modalTitle = useMemo(() => {
@@ -68,6 +72,24 @@ export default function About() {
     if (modal === "participants") return "Participants";
     return "";
   }, [modal]);
+
+  useEffect(() => {
+    if (modal === "participants" && participants.length === 0) {
+      const fetchParticipants = async () => {
+        setLoadingParticipants(true);
+        try{
+          const API_BASE = import.meta.env.VITE_API_URL || "https://accelnet-worker-api.diogomiranda8091.workers.dev";
+          const response = await axios.get(`${API_BASE}/api/participants`);
+          setParticipants(response.data);
+        }catch(err){
+          console.error("Error fetching Participants:", err);
+        }finally{
+          setLoadingParticipants(false);
+        }
+      };
+      fetchParticipants();
+    }
+  },[modal, participants.length]);
 
   return (
     <div className="relative">
@@ -218,21 +240,16 @@ export default function About() {
 
           {modal === "participants" && (
             <>
-              <FeaturedParticipants
-                title="Key participants"
-                description="A few of the most visible contributors across the network."
-                limit={6}
-                showBackground={false}
-              />
-
-              <div className="mt-4 flex justify-center">
-                <a
-                  href="/participants"
-                  className="inline-flex items-center justify-center rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-                >
-                  View all participants
-                </a>
-              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Our Participants</h3>
+              {loadingParticipants && <p className="text-md font-light text-gray-500 mb-3">Loading Participants... </p>}
+              {!loadingParticipants && participants.length === 0 && <p className="text-md font-light text-gray-500 mb-3">No Particpants Found.</p>}
+              {!loadingParticipants && participants.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pr-2">
+                  {participants.map((p) =>(
+                  <ParticipantCard key={p.id} participant={p} />
+                  ))}
+                </div>
+              )}
             </>
           )}
         </ModalShell>
