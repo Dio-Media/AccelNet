@@ -16,20 +16,13 @@ const Navbar = () => {
       dropdown: true,
       items: [
         { path: "/steering-committee", label: "Steering Committee" },
-        { path: "/advisory-board", label: "Advisory Board" },
         { path: "/student-network", label: "AccelNet Student Network" },
-        { 
-          path: "/participants", 
-          label: "Participants",
-        }
       ]
     },
     { path: "/working-groups", label: "Working Groups" },
-    { path: "/grants", label: "Grants" },
     { path: "/news", label: "News" },
     { path: "/events", label: "Events" },
     { path: "https://brainonarts.wordpress.com/", label: "Art & Science" },
-    { path: "/forum", label: "Forum" },
   ];
 
   const renderDropdown = (link) => (
