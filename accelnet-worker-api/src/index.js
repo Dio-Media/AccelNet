@@ -10,24 +10,34 @@
 
 import { getSupabase } from "./lib/supabase.js";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-}
+const allowedOrigins = [
+  "https://www.accelnet-brainhealth.org",
+  "https://accelnet-brainhealth.org",
+  "http://localhost:5173", // Vite default local port
+  // Add your specific Vercel URL here if testing on Vercel preview
+];
 
 export default {
   async fetch(request, env) {
+    const origin = request.headers.get("Origin");
+    
+    // Check if the request origin is in the allowed list, otherwise fallback to the primary domain
+    const currentOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
 
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": currentOrigin,
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    };
+
+    // Preflight request handler
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders})
+      return new Response(null, { headers: corsHeaders });
     }
 
     const url = new URL(request.url);
 
     if (url.pathname === "/api/participants") {
-
-
       const supabase = getSupabase(env);
 
       const { data, error } = await supabase
@@ -40,7 +50,7 @@ export default {
           department,
           institutions(inst_name)
           `)
-          .order("last_name");
+        .order("last_name");
 
       if (error) {
         return new Response(
@@ -48,21 +58,20 @@ export default {
           { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
         );
       }
+
       const formattedData = data.map((participant) => ({
         id: participant.id,
         name: `${participant.first_name} ${participant.last_name}`,
         title: participant.title,
         department: participant.department,
-        institution: participant.institutions ?.inst_name ?? null
+        institution: participant.institutions?.inst_name ?? null
       }));
-      return new Response(JSON.stringify(formattedData),{
-        headers: {...corsHeaders, "Content-Type": "application/json"}
-      });
 
+      return new Response(JSON.stringify(formattedData), {
+        headers: { "Content-Type": "application/json", ...corsHeaders }
+      });
     }
 
-    return new Response("Not Found", { status: 404 });
+    return new Response("Not Found", { status: 404, headers: corsHeaders });
   }
 };
-
-
