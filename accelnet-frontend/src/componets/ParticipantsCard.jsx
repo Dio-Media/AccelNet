@@ -1,6 +1,6 @@
 // src/components/ParticipantCard.jsx
 import React from 'react';
-import { BsLinkedIn, BsGoogle, BsOrcid } from 'react-icons/bs';
+import { BsLinkedin, BsGoogle } from 'react-icons/bs';
 
 const ParticipantCard = ({ participant }) => {
   const { name, institution, title, department, linkedIn, orcid, googleScholar } = participant;
@@ -19,12 +19,12 @@ const ParticipantCard = ({ participant }) => {
         <div className="flex gap-2 mt-2">
           {linkedIn && (
             <a href={linkedIn} target="_blank" rel="noreferrer">
-              <BsLinkedIn size={20} color="0077b5" />
+              <BsLinkedin size={20} color="0077b5" />
             </a>
           )}
           {orcid && (
             <a href={orcid} target="_blank" rel="noreferrer">
-              <BsOrcid size={20} color="0077b5" />
+              <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/orcid.svg" alt="ORCID" className="w-5 h-5" />
             </a>
           )}
           {googleScholar && (
