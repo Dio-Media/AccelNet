@@ -244,7 +244,6 @@ export default function About() {
             <>
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Our Participants</h3>
               {loadingParticipants && <p className="text-md font-light text-gray-500 mb-3">Loading Participants... </p>}
-              {!loadingParticipants && participants.length === 0 && <p className="text-md font-light text-gray-500 mb-3">No Particpants Found.</p>}
               {!loadingParticipants && participants.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pr-2">
                   {participants.map((p) =>(
