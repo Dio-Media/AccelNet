@@ -14,6 +14,7 @@ const allowedOrigins = [
   "https://www.accelnet-brainhealth.org/",
   "https://accelnet-brainhealth.org/",
   "http://localhost:5173", // Vite default local port
+  "https://accel-net.vercel.app/"
 ];
 
 export default {
