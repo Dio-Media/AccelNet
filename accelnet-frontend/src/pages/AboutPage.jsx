@@ -3,6 +3,9 @@ import FeaturedParticipants from "./home/componets/ResearchTeam";
 import ParticipantCard from "../componets/ParticipantsCard.jsx";
 import axios from "axios";
 
+
+const API_BASE = import.meta.env.VITE_API_URL || "https://accelnet-worker-api.diogomiranda8091.workers.dev";
+
 const ModalShell = ({ titleId, title, onClose, children }) => {
   // Close on ESC key + lock scroll
   useEffect(() => {
@@ -78,7 +81,6 @@ export default function About() {
       const fetchParticipants = async () => {
         setLoadingParticipants(true);
         try{
-          const API_BASE = import.meta.env.VITE_API_URL || "https://accelnet-worker-api.diogomiranda8091.workers.dev";
           const response = await axios.get(`${API_BASE}/api/participants`);
           setParticipants(response.data);
         }catch(err){
