@@ -20,12 +20,37 @@ export function ResearchHero() {
       registerLink: "https://ebrains.eu/news-and-events/events/2026/ebrains-accelnet-joint-day",
     },
     {
-      src: "/florence_italy_2.jpg",
-      alt: "AccelNet Summit",
-      caption: "AccelNet Summit",
-      info: "More Information Coming Soon",
+      src: "/ebrains_summit.jpg",
+      alt: "EBrains Summit",
+      caption: "EBrains Summit",
+      info: null,
       registerLink: null,
     },
+    {
+      src: "/herobg2.jpg",
+      alt: "butoh",
+      caption: "Brain on Butoh",
+      info: null,
+      registerLink: null,
+    },
+
+    {
+      src: "/Loving_acting.jpg",
+      alt: "Brain on Acting",
+      caption: "Brain on Acting",
+      info: null,
+      registerLink: null,
+    },
+
+    {
+      src: "/mariachi_uh.jpg",
+      alt: "Mariachi at UH",
+      caption: "Mariachi at UH",
+      info: null,
+      registerLink: null,
+    },
+
+    
   ], []);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -89,16 +114,6 @@ export function ResearchHero() {
         </div>
       ))}
 
-      {/* Prev / Next buttons */}
-      <div className="YOUR NAV CONTAINER STYLES">
-        <button type="button" onClick={prev} aria-label="Previous slide" className="YOUR PREV BUTTON STYLES">
-          ←
-        </button>
-        <button type="button" onClick={next} aria-label="Next slide" className="YOUR NEXT BUTTON STYLES">
-          →
-        </button>
-      </div>
-
       {/* Dot indicators */}
       <div className="flex items-center gap-2">
         {slides.map((_, i) => (
@@ -106,7 +121,7 @@ export function ResearchHero() {
             key={i}
             type="button"
             onClick={() => goTo(i)}
-            className={i === currentIndex ? "YOUR ACTIVE DOT STYLES" : "YOUR INACTIVE DOT STYLES"}
+            className={i === currentIndex ? "w-3 h-3 bg-white rounded-full" : "w-3 h-3 bg-gray-500 rounded-full"}
             aria-label={`Go to slide ${i + 1}`}
             aria-current={i === currentIndex ? "true" : "false"}
           />
